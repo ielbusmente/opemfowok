@@ -1,19 +1,18 @@
-import { createClient } from "@insforge/sdk";
+import { createServerClient } from "@insforge/sdk/ssr";
 import { cookies } from "next/headers";
 
 export const createInsforgeServer = async () => {
     const cookieStore = await cookies();
-    const url = process.env.NEXT_PUBLIC_INSFORGE_URL;
-    const anonKey = process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY;
+    return createServerClient({ cookies: cookieStore });
+};
 
-    return createClient({
-        baseUrl: url,
-        anonKey,
-        headers: {
-            Cookie: cookieStore
-                .getAll()
-                .map((cookie) => `${cookie.name}=${cookie.value}`)
-                .join("; "),
-        },
-    });
+export const getCurrentUser = async () => {
+    const client = await createInsforgeServer();
+    const { data, error } = await client.auth.getCurrentUser();
+
+    if (error) {
+        return null;
+    }
+
+    return data?.user ?? null;
 };

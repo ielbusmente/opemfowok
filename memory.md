@@ -1,32 +1,34 @@
-# Memory — Landing Page Split
+# Memory — Auth and UI foundation
 
 Last updated: 2026-08-02
 
 ## What was built
-- Reworked the homepage into a JobPilot-style marketing landing page.
-- Split the landing page into reusable components under `components/homepage/`:
-  - `Navbar.tsx`
-  - `HeroSection.tsx`
-  - `FeatureSection.tsx`
-  - `HowItWorksSection.tsx`
-  - `CTASection.tsx`
-- Updated `app/page.tsx` to compose the new components.
-- Verified the app builds successfully with `npm run build`.
+
+- Implemented the first InsForge authentication flow for Google and GitHub OAuth using server-side auth actions and callback handling.
+- Added a login page at app/(auth)/login/page.tsx and a dashboard page at app/dashboard/page.tsx.
+- Added protected-route handling with proxy.ts so dashboard, find-jobs, and profile areas redirect unauthenticated users to login.
+- Added a visible Sign out button on the dashboard.
+- Created redirect helper logic and regression tests for auth redirect behavior in lib/auth-redirect.ts and lib/auth-redirect.test.mjs.
+- Updated the UI registry with the new auth and dashboard visual patterns in context/ui-registry.md.
 
 ## Decisions made
-- Kept the landing page as a static marketing page for the homepage route.
-- Used Tailwind v4 theme tokens from `app/globals.css` instead of hardcoded color classes.
-- Chose a component-based homepage structure for maintainability.
+
+- Chose a server-side OAuth flow for InsForge to keep auth cookies and callback exchange on the server, which fits the Next.js app architecture.
+- Used the Next.js proxy convention instead of the deprecated middleware convention for protected-route handling.
+- Kept the initial auth UI aligned with the existing Tailwind design tokens and the project’s homepage styling patterns.
 
 ## Problems solved
-- The original homepage was an inline placeholder and needed a cohesive product narrative.
-- The page was refactored without breaking the existing build.
+
+- Fixed the auth redirect flow so protected routes can send users back to the page they originally attempted to visit.
+- Resolved the Next.js 16 deprecation warning by migrating the route guard from middleware.ts to proxy.ts.
 
 ## Current state
-- Homepage is implemented and broken into reusable components.
-- The app builds successfully.
-- `memory.md` is now present in the `hanap-trabaho` project root.
+
+- Auth sign-in and sign-out are wired through the app.
+- Protected routes redirect unauthenticated users to login.
+- The app builds successfully with npm run build.
 
 ## Next session starts with
-- Continue building the next homepage or landing-related feature, such as auth page or dashboard scaffolding.
-- Optionally, add a shared layout/navbar component to support the rest of the app.
+
+- Continue with the next planned feature from the build plan: PostHog initialization.
+- After that, move to the database schema and profile workflow.

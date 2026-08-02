@@ -19,3 +19,5 @@ After building any component — update this file with the component name, file 
 ## Components
 
 - Homepage marketing layout — app/page.tsx — uses bg-background, bg-surface, bg-surface-secondary, border-border, text-text-primary, text-text-secondary, text-text-darkest, bg-accent, rounded-[24px], rounded-2xl, rounded-md, shadow-sm
+- Auth card layout — app/(auth)/login/page.tsx — uses bg-background, bg-surface, bg-surface-secondary, border-border, text-text-primary, text-text-secondary, text-accent, text-accent-foreground, rounded-[32px], rounded-[24px], rounded-xl, rounded-lg, shadow-sm
+- Dashboard shell — app/dashboard/page.tsx — uses bg-background, bg-surface, border-border, text-text-primary, text-text-secondary, text-accent, rounded-[32px], rounded-md, shadow-sm

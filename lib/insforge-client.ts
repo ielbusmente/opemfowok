@@ -1,9 +1,3 @@
-import { createClient } from "@insforge/sdk";
+import { createBrowserClient } from "@insforge/sdk/ssr";
 
-const url = process.env.NEXT_PUBLIC_INSFORGE_UR;
-const anonKey = process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY;
-
-export const insforge = createClient({
-    baseUrl: url,
-    anonKey,
-});
+export const insforge = createBrowserClient();
