@@ -16,7 +16,7 @@ Update this file after every completed feature. Any AI agent reading this should
 
 ### Phase 1 — Foundation
 
-- [ ] 01 Homepage
+- [x] 01 Homepage
 - [ ] 02 Auth
 - [ ] 03 PostHog Initialization
 - [ ] 04 Database Schema

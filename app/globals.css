@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+/* for latest tailwind: https://context7.com Get the latest docs into Claude, Codex, Cursor and other agents */
+
 :root {
   color-scheme: light;
 }
