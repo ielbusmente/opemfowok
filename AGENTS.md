@@ -29,6 +29,19 @@ Read in this exact order before any implementation:
 - If the same problem persists after one corrective prompt —
   stop immediately and run /recover
 
+## InsForge Backend Rules
+
+When this project uses InsForge as the backend, follow the latest InsForge guidance before implementing anything new:
+
+- Prefer the official InsForge CLI and agent skills over ad-hoc backend setup.
+- If an InsForge MCP server is available, use its fetch-docs capability first; otherwise use the official InsForge docs and skill guidance.
+- Use InsForge for authentication, database, storage, and realtime needs.
+- Keep browser and server clients separate: browser-side code should use the browser client, and server routes/actions should use the server client.
+- Store configuration in environment variables such as `NEXT_PUBLIC_INSFORGE_URL` and `NEXT_PUBLIC_INSFORGE_ANON_KEY`.
+- Never hardcode secrets or API keys.
+- Scope database queries to the current user where relevant, and always handle query errors.
+- For storage uploads, use the project’s intended bucket/path conventions and keep uploads server-side.
+
 ## Available Skills
 
 - `/architect` — before any complex feature. Think before building.
