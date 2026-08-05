@@ -16,6 +16,7 @@ Last updated: 2026-08-02
 - Chose a server-side OAuth flow for InsForge to keep auth cookies and callback exchange on the server, which fits the Next.js app architecture.
 - Used the Next.js proxy convention instead of the deprecated middleware convention for protected-route handling.
 - Kept the initial auth UI aligned with the existing Tailwind design tokens and the project’s homepage styling patterns.
+- Keep server-side PostHog for later
 
 ## Problems solved
 
@@ -30,5 +31,4 @@ Last updated: 2026-08-02
 
 ## Next session starts with
 
-- Continue with the next planned feature from the build plan: PostHog initialization.
-- After that, move to the database schema and profile workflow.
+- Move to the database schema and profile workflow.

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { signInWithGitHub, signInWithGoogle } from "@/actions/auth";
 import { getSafeRedirectPath } from "@/lib/auth-redirect";
 import { getCurrentUser } from "@/lib/insforge-server";
+import { OAuthSignInButton } from "@/components/auth/OAuthSignInButton";
 
 export default async function LoginPage({
     searchParams,
@@ -40,21 +41,23 @@ export default async function LoginPage({
 
                 <div className="w-full max-w-md rounded-[24px] border border-border bg-surface-secondary p-6">
                     <form action={signInWithGoogle} className="mb-3">
-                        <button
+                        <OAuthSignInButton
                             type="submit"
+                            provider="google"
                             className="flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-surface px-4 py-3 text-sm font-medium text-text-primary transition hover:border-accent hover:text-accent"
                         >
                             Continue with Google
-                        </button>
+                        </OAuthSignInButton>
                     </form>
 
                     <form action={signInWithGitHub}>
-                        <button
+                        <OAuthSignInButton
                             type="submit"
+                            provider="github"
                             className="flex w-full items-center justify-center gap-3 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-accent-foreground transition hover:bg-accent-dark"
                         >
                             Continue with GitHub
-                        </button>
+                        </OAuthSignInButton>
                     </form>
                 </div>
             </div>

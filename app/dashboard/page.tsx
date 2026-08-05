@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { signOut } from "@/actions/auth";
+import { PostHogIdentify, PostHogResetButton } from "@/lib/insforge-client";
 import { getCurrentUser } from "@/lib/insforge-server";
 
 export default async function DashboardPage() {
@@ -11,6 +12,13 @@ export default async function DashboardPage() {
 
     return (
         <div className="min-h-screen bg-background px-6 py-12">
+            <PostHogIdentify
+                user={{
+                    id: user.id,
+                    email: user.email,
+                    name: user.profile?.name,
+                }}
+            />
             <div className="mx-auto flex max-w-5xl flex-col gap-6 rounded-[32px] border border-border bg-surface p-8 shadow-sm">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div className="space-y-2">
@@ -27,12 +35,7 @@ export default async function DashboardPage() {
                     </div>
 
                     <form action={signOut}>
-                        <button
-                            type="submit"
-                            className="rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-text-dark transition hover:border-accent hover:text-accent"
-                        >
-                            Sign out
-                        </button>
+                        <PostHogResetButton />
                     </form>
                 </div>
             </div>

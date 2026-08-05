@@ -16,3 +16,7 @@ Based on [JS Mastery YT](https://jsmastery.com/video-kit/ecfdc0a6-75dd-4079-a494
 ## Logged in view
 
 ![Logged in view](image-4.png)
+
+# PostHog Integration
+
+![PostHog Integration Activity](image-5.png)
