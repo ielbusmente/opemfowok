@@ -1,3 +1,9 @@
+---
+description: Instructions building apps with MCP
+globs: *
+alwaysApply: true
+---
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
@@ -29,18 +35,16 @@ Read in this exact order before any implementation:
 - If the same problem persists after one corrective prompt —
   stop immediately and run /recover
 
-## InsForge Backend Rules
+## Invariants — Never Violate These
 
-When this project uses InsForge as the backend, follow the latest InsForge guidance before implementing anything new:
-
-- Prefer the official InsForge CLI and agent skills over ad-hoc backend setup.
-- If an InsForge MCP server is available, use its fetch-docs capability first; otherwise use the official InsForge docs and skill guidance.
-- Use InsForge for authentication, database, storage, and realtime needs.
-- Keep browser and server clients separate: browser-side code should use the browser client, and server routes/actions should use the server client.
-- Store configuration in environment variables such as `NEXT_PUBLIC_INSFORGE_URL` and `NEXT_PUBLIC_INSFORGE_ANON_KEY`.
-- Never hardcode secrets or API keys.
-- Scope database queries to the current user where relevant, and always handle query errors.
-- For storage uploads, use the project’s intended bucket/path conventions and keep uploads server-side.
+- API routes contain no UI logic. Components contain no DB logic.
+- Agent code in agent/ never imports from components/ or actions/
+- Server Actions never call agent functions — only API routes call agent functions
+- All InsForge DB writes from the agent go through lib/insforge-server.ts only
+- Easy Apply is never touched — external apply URLs only
+- Every Stagehand act() call is wrapped in try/catch
+- Match threshold always comes from MATCH_THRESHOLD in `lib/utils.ts`
+- AgentSpan step IDs always use format apply-{job_id}
 
 ## Available Skills
 
@@ -50,12 +54,6 @@ When this project uses InsForge as the backend, follow the latest InsForge guida
 - `/recover` — when something breaks after one failed correction.
 - `/remember save` — when a feature spans multiple sessions.
 - `/remember restore` — when returning after a multi-session feature.
-
----
-description: Instructions building apps with MCP
-globs: *
-alwaysApply: true
----
 
 # InsForge SDK Documentation - Overview
 
@@ -73,6 +71,7 @@ Backend-as-a-service (BaaS) platform providing:
 ## Installation
 
 The following is a step-by-step guide to installing and using the InsForge TypeScript SDK for Web applications. If you are building other types of applications, please refer to:
+
 - [Swift SDK documentation](/sdks/swift/overview) for iOS, macOS, tvOS, and watchOS applications.
 - [Kotlin SDK documentation](/sdks/kotlin/overview) for Android applications.
 - [REST API documentation](/sdks/rest/overview) for direct HTTP API access.
@@ -94,13 +93,12 @@ npm install @insforge/sdk@latest
 You must create a client instance using `createClient()` with your base URL and anon key:
 
 ```javascript
-import { createClient } from '@insforge/sdk';
+import { createClient } from "@insforge/sdk";
 
 const client = createClient({
-  baseUrl: 'https://your-app.region.insforge.app',  // Your InsForge backend URL
-  anonKey: 'your-anon-key-here'       // Get this from backend metadata
+    baseUrl: "https://your-app.region.insforge.app", // Your InsForge backend URL
+    anonKey: "your-anon-key-here", // Get this from backend metadata
 });
-
 ```
 
 **API BASE URL**: Your API base URL is `https://your-app.region.insforge.app`.
@@ -126,38 +124,37 @@ Available documentation types:
 - `"real-time"` - Real-time pub/sub (database + client events) via WebSockets
 - `"db-sdk-typescript"` - Database operations with TypeScript SDK
 - **Authentication** - Choose based on implementation:
-  - `"auth-sdk-typescript"` - TypeScript SDK methods for custom auth flows
-  - `"auth-components-react"` - Pre-built auth UI for React+Vite (single-page app)
-  - `"auth-components-react-router"` - Pre-built auth UI for React(Vite+React Router) (multi-page app)
-  - `"auth-components-nextjs"` - Pre-built auth UI for Next.js (SSR app)
+    - `"auth-sdk-typescript"` - TypeScript SDK methods for custom auth flows
+    - `"auth-components-react"` - Pre-built auth UI for React+Vite (singlepage App)
+    - `"auth-components-react-router"` - Pre-built auth UI for React(Vite+React Router) (Multipage App)
+    - `"auth-components-nextjs"` - Pre-built auth UI for Nextjs (SSR App)
 - `"storage-sdk"` - File storage operations
 - `"functions-sdk"` - Serverless functions invocation
 - `"ai-integration-sdk"` - AI integration with the provisioned OpenRouter key and OpenAI SDK
+- `"real-time"` - Real-time pub/sub (database + client events) via WebSockets
 - `"deployment"` - Deploy frontend applications via MCP tool
-- `"payments"` - Stripe Checkout, Billing Portal, webhook projections, and fulfillment patterns
 
-These docs are mostly for the TypeScript SDK. For other languages, you can also use the `fetch-sdk-docs` MCP tool to get specific documentation.
+These documentations are mostly for TypeScript SDK. For other languages, you can also use `fetch-sdk-docs` mcp tool to get specific documentation.
 
 ### Use the InsForge `fetch-sdk-docs` MCP tool to get specific SDK documentation
 
-You can fetch SDK documentation using the `fetch-sdk-docs` MCP tool with a specific feature type and language.
+You can fetch sdk documentation using the `fetch-sdk-docs` MCP tool with specific feature type and language.
 
 Available feature types:
-- `db` - Database operations
-- `storage` - File storage operations
-- `functions` - Serverless functions invocation
-- `auth` - User authentication
-- `ai` - AI integration with the provisioned OpenRouter key and OpenAI SDK
-- `realtime` - Real-time pub/sub (database + client events) via WebSockets
-- `payments` - Stripe Checkout and Billing Portal with webhook-based fulfillment
+
+- db - Database operations
+- storage - File storage operations
+- functions - Serverless functions invocation
+- auth - User authentication
+- ai - AI integration with the provisioned OpenRouter key and OpenAI SDK
+- realtime - Real-time pub/sub (database + client events) via WebSockets
 
 Available languages:
-- `typescript` - JavaScript/TypeScript SDK
-- `swift` - Swift SDK (for iOS, macOS, tvOS, and watchOS)
-- `kotlin` - Kotlin SDK (for Android and JVM applications)
-- `rest-api` - REST API
 
-Payments currently has TypeScript SDK docs only. Use the Payments API reference for non-TypeScript clients.
+- typescript - JavaScript/TypeScript SDK
+- swift - Swift SDK (for iOS, macOS, tvOS, and watchOS)
+- kotlin - Kotlin SDK (for Android and JVM applications)
+- rest-api - REST API
 
 ## When to Use SDK vs MCP Tools
 
@@ -168,7 +165,6 @@ Payments currently has TypeScript SDK docs only. Use the Payments API reference 
 - Storage operations (upload, download files)
 - AI integration via the provisioned OpenRouter key with the OpenAI SDK or OpenRouter HTTP API
 - Serverless function invocation
-- Payments checkout and customer portal session creation
 
 ### Use MCP Tools for Infrastructure:
 
@@ -184,7 +180,7 @@ Payments currently has TypeScript SDK docs only. Use the Payments API reference 
 - For auth: use `auth-sdk` for custom UI, or framework-specific components for pre-built UI
 - SDK returns `{data, error}` structure for all operations
 - Database inserts require array format: `[{...}]`
-- Serverless functions have one endpoint and do not support nested route paths
+- Serverless functions have single endpoint (no subpaths)
 - Storage: Upload files to buckets, store URLs in database
 - AI integrations should call OpenRouter directly with `baseURL: "https://openrouter.ai/api/v1"` and a server-side `OPENROUTER_API_KEY`
 - **EXTRA IMPORTANT**: Use Tailwind CSS 3.4 (do not upgrade to v4). Lock these dependencies in `package.json`
