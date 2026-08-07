@@ -9,6 +9,7 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+.vscode
 
 # testing
 /coverage
@@ -23,6 +24,7 @@
 # misc
 .DS_Store
 *.pem
+notes.txt
 
 # debug
 npm-debug.log*
@@ -39,3 +41,24 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# InsForge & AI agent skills
+.insforge
+.agent
+.agents
+.augment
+.claude
+.cline
+.github/copilot*
+
+# Project context and planning docs
+/context
+.kilocode
+.qoder
+.qwen
+.roo
+.trae
+.windsurf
+
+.memory.md
+.current-test.md

@@ -1,4 +1,4 @@
-Based on [JS Mastery YT](https://jsmastery.com/video-kit/ecfdc0a6-75dd-4079-a494-d538b43eb4bf)
+Based on [JS Mastery YT](https://github.com/jsmastery-pro/JobPilot)
 
 # Landing Page
 
@@ -20,3 +20,7 @@ Based on [JS Mastery YT](https://jsmastery.com/video-kit/ecfdc0a6-75dd-4079-a494
 # PostHog Integration
 
 ![PostHog Integration Activity](image-5.png)
+
+# Documentation
+
+[Opemfowok Documentation](https://docs.google.com/document/d/1e9yboPw9oIvU7eJp_jxbhPPD01pDFt6_BlV7MxTNFcE/edit?usp=sharing)
