@@ -42,7 +42,9 @@ export function HeroSection({
           {heading}
         </h1>
 
-        <p className="mt-4 max-w-xl text-base leading-7 text-text-secondary">{body}</p>
+        <p className="mt-4 max-w-xl text-base leading-7 text-text-secondary">
+          {body}
+        </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
           <a
@@ -61,8 +63,13 @@ export function HeroSection({
 
         <div className="mt-8 grid gap-3 sm:grid-cols-3">
           {stats.map((stat) => (
-            <div key={stat.label} className="rounded-2xl border border-border bg-surface-secondary p-4">
-              <p className="text-2xl font-semibold text-text-darkest">{stat.value}</p>
+            <div
+              key={stat.label}
+              className="rounded-2xl border border-border bg-surface-secondary p-4"
+            >
+              <p className="text-2xl font-semibold text-text-darkest">
+                {stat.value}
+              </p>
               <p className="mt-1 text-sm text-text-secondary">{stat.label}</p>
             </div>
           ))}

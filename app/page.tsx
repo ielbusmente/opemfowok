@@ -25,15 +25,18 @@ const features = [
 const steps = [
   {
     title: "Create your profile",
-    description: "Add your experience, skills, and preferred roles once so every recommendation stays aligned.",
+    description:
+      "Add your experience, skills, and preferred roles once so every recommendation stays aligned.",
   },
   {
     title: "Discover strong matches",
-    description: "Search for tech roles and let the assistant score each opportunity against your background.",
+    description:
+      "Search for tech roles and let the assistant score each opportunity against your background.",
   },
   {
     title: "Apply with confidence",
-    description: "Review the company dossier and move into your next application with the right context.",
+    description:
+      "Review the company dossier and move into your next application with the right context.",
   },
 ];
 
@@ -71,7 +74,10 @@ export default function Home() {
           imageAlt="Opemfowok dashboard preview"
         />
 
-        <section id="features" className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+        <section
+          id="features"
+          className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]"
+        >
           <FeatureSection
             eyebrow="Why it helps"
             heading="A focused workflow for job seekers who want better matches."

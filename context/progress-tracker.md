@@ -7,8 +7,8 @@ Update this file after every completed feature. Any AI agent reading this should
 ## Current Status
 
 **Phase:** Phase 2 — Profile Page
-**Last completed:** 04 Database Schema (InsForge tables, storage bucket, and RLS policies)
-**Next:** 05 Profile Page — Full UI
+**Last completed:** 05 Profile Page — Full UI
+**Next:** 06 Profile Save Logic
 
 ---
 
@@ -23,7 +23,7 @@ Update this file after every completed feature. Any AI agent reading this should
 
 ### Phase 2 — Profile Page
 
-- [ ] 05 Profile Page — Full UI
+- [x] 05 Profile Page — Full UI
 - [ ] 06 Profile Save Logic
 - [ ] 07 AI Profile Extraction from Resume
 - [ ] 08 Resume PDF Generation from Profile
@@ -61,3 +61,5 @@ _Add decisions here as they are made during implementation._
 - The app now supports Google and GitHub sign-in entry points and a working callback route for the OAuth flow.
 - InsForge database schema setup is complete, including the application tables, resumes storage bucket, and row-level security policies.
 - Phase 2 starts with the Profile Page UI; profile save logic and resume workflows remain queued after the mock UI.
+- Built the complete Profile page UI from `context/designs/profile.png`, including responsive form sections, resume controls, completion state, tag inputs, and repeatable work experience.
+- Profile controls currently use local mock state only; InsForge persistence is reserved for feature 06.
