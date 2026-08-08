@@ -51,6 +51,7 @@ export function WorkExperienceSection({
             <div className="grid gap-4 md:grid-cols-2">
               <ProfileField label="Company Name">
                 <TextInput
+                  name={`work_${index}_company`}
                   value={role.company}
                   onChange={(event) =>
                     onUpdateRole(index, "company", event.target.value)
@@ -60,6 +61,7 @@ export function WorkExperienceSection({
               </ProfileField>
               <ProfileField label="Job Title">
                 <TextInput
+                  name={`work_${index}_title`}
                   value={role.title}
                   onChange={(event) =>
                     onUpdateRole(index, "title", event.target.value)
@@ -69,6 +71,7 @@ export function WorkExperienceSection({
               </ProfileField>
               <ProfileField label="Start Date">
                 <TextInput
+                  name={`work_${index}_startDate`}
                   value={role.startDate}
                   onChange={(event) =>
                     onUpdateRole(index, "startDate", event.target.value)
@@ -79,6 +82,7 @@ export function WorkExperienceSection({
               <ProfileField label="End Date">
                 <div className="flex items-center gap-3">
                   <TextInput
+                    name={`work_${index}_endDate`}
                     value={role.endDate}
                     onChange={(event) =>
                       onUpdateRole(index, "endDate", event.target.value)
@@ -88,6 +92,7 @@ export function WorkExperienceSection({
                   />
                   <label className="flex shrink-0 items-center gap-1.5 text-[10px] text-text-secondary">
                     <input
+                      name={`work_${index}_current`}
                       type="checkbox"
                       checked={role.current}
                       onChange={(event) =>

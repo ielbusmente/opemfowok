@@ -6,6 +6,11 @@ import {
 import { TagList } from "@/components/profile/TagList";
 
 type ProfessionalInfoSectionProps = {
+  values: {
+    currentTitle: string;
+    experienceLevel: string;
+    yearsExperience: string;
+  };
   skills: string[];
   industries: string[];
   skillInput: string;
@@ -19,6 +24,7 @@ type ProfessionalInfoSectionProps = {
 };
 
 export function ProfessionalInfoSection({
+  values,
   skills,
   industries,
   skillInput,
@@ -40,10 +46,10 @@ export function ProfessionalInfoSection({
           label="Current / Recent Job Title"
           className="md:col-span-2"
         >
-          <TextInput placeholder="Your current or recent job title" />
+          <TextInput name="current_title" defaultValue={values.currentTitle} placeholder="Your current or recent job title" />
         </ProfileField>
         <ProfileField label="Experience Level">
-          <SelectInput>
+          <SelectInput name="experience_level" defaultValue={values.experienceLevel}>
             <option value="" disabled>
               Select experience level
             </option>
@@ -54,7 +60,7 @@ export function ProfessionalInfoSection({
           </SelectInput>
         </ProfileField>
         <ProfileField label="Years of Experience">
-          <TextInput type="number" min="0" placeholder="0" />
+          <TextInput name="years_experience" type="number" min="0" defaultValue={values.yearsExperience} placeholder="0" />
         </ProfileField>
         <ProfileField label="Skills" className="md:col-span-2">
           <div className="flex gap-2">

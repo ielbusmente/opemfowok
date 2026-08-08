@@ -4,15 +4,25 @@ import {
   TextInput,
 } from "@/components/profile/ProfileField";
 
-type PersonalInfoSectionProps = { email: string };
+type PersonalInfoSectionProps = {
+  email: string;
+  values: {
+    fullName: string;
+    phone: string;
+    location: string;
+    linkedinUrl: string;
+    portfolioUrl: string;
+    workAuthorization: string;
+  };
+};
 
-export function PersonalInfoSection({ email }: PersonalInfoSectionProps) {
+export function PersonalInfoSection({ email, values }: PersonalInfoSectionProps) {
   return (
     <section className="space-y-4">
       <h3 className="text-xs font-semibold text-text-primary">Personal Info</h3>
       <div className="grid gap-4 md:grid-cols-2">
         <ProfileField label="Full Name">
-          <TextInput placeholder="Your full name" />
+          <TextInput name="full_name" defaultValue={values.fullName} placeholder="Your full name" />
         </ProfileField>
         <ProfileField label="Email">
           <TextInput
@@ -22,19 +32,19 @@ export function PersonalInfoSection({ email }: PersonalInfoSectionProps) {
           />
         </ProfileField>
         <ProfileField label="Phone Number">
-          <TextInput placeholder="+1 (555) 000-0000" />
+          <TextInput name="phone" defaultValue={values.phone} placeholder="+1 (555) 000-0000" />
         </ProfileField>
         <ProfileField label="Location">
-          <TextInput placeholder="City, Country" />
+          <TextInput name="location" defaultValue={values.location} placeholder="City, Country" />
         </ProfileField>
         <ProfileField label="LinkedIn URL">
-          <TextInput placeholder="https://linkedin.com/in/your-name" />
+          <TextInput name="linkedin_url" defaultValue={values.linkedinUrl} placeholder="https://linkedin.com/in/your-name" />
         </ProfileField>
         <ProfileField label="Portfolio / GitHub">
-          <TextInput placeholder="https://github.com/your-name" />
+          <TextInput name="portfolio_url" defaultValue={values.portfolioUrl} placeholder="https://github.com/your-name" />
         </ProfileField>
         <ProfileField label="Work Authorization">
-          <SelectInput>
+          <SelectInput name="work_authorization" defaultValue={values.workAuthorization}>
             <option value="" disabled>
               Select authorization
             </option>

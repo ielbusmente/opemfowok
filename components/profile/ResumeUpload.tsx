@@ -2,11 +2,14 @@
 
 import { ChangeEvent, DragEvent, useRef, useState } from "react";
 
-type ResumeUploadProps = { onFileSelected: (fileName: string) => void };
+type ResumeUploadProps = {
+  onFileSelected: (fileName: string) => void;
+  initialFileName?: string | null;
+};
 
-export function ResumeUpload({ onFileSelected }: ResumeUploadProps) {
+export function ResumeUpload({ onFileSelected, initialFileName }: ResumeUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [fileName, setFileName] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string | null>(initialFileName ?? null);
   const [isDragging, setIsDragging] = useState(false);
 
   const selectFile = (file: File | undefined): void => {
@@ -66,6 +69,7 @@ export function ResumeUpload({ onFileSelected }: ResumeUploadProps) {
         </button>
         <input
           ref={inputRef}
+          name="resume"
           type="file"
           accept="application/pdf"
           className="sr-only"

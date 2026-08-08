@@ -18,6 +18,19 @@ After building any component — update this file with the component name, file 
 
 ## Components
 
+### Profile Persistence Feedback
+
+Files: actions/profile.ts, app/profile/page.tsx, components/profile/ProfileForm.tsx
+Last updated: 2026-08-09
+
+| Property | Class |
+| --- | --- |
+| Save pending state | `disabled:cursor-not-allowed disabled:opacity-60` |
+| Save success feedback | `text-xs font-medium text-success-dark` |
+| Save error feedback | `text-xs font-medium text-error` |
+
+Pattern notes: Profile persistence keeps the existing card and form surfaces unchanged. Mutation feedback is compact inline text immediately above the primary action, with the primary button label reflecting pending and successful states.
+
 ### Profile Page Surface
 
 Files: app/profile/page.tsx, components/profile/ProfileForm.tsx, components/profile/ProfileAttentionBanner.tsx, components/profile/PersonalInfoSection.tsx, components/profile/ProfessionalInfoSection.tsx, components/profile/WorkExperienceSection.tsx, components/profile/EducationSection.tsx, components/profile/JobPreferencesSection.tsx, components/profile/TagList.tsx, components/profile/ProfileField.tsx, components/profile/ResumeUpload.tsx, components/profile/CompletionIndicator.tsx

@@ -24,7 +24,7 @@ Update this file after every completed feature. Any AI agent reading this should
 ### Phase 2 — Profile Page
 
 - [x] 05 Profile Page — Full UI
-- [ ] 06 Profile Save Logic
+- [x] 06 Profile Save Logic
 - [ ] 07 AI Profile Extraction from Resume
 - [ ] 08 Resume PDF Generation from Profile
 
@@ -62,4 +62,6 @@ _Add decisions here as they are made during implementation._
 - InsForge database schema setup is complete, including the application tables, resumes storage bucket, and row-level security policies.
 - Phase 2 starts with the Profile Page UI; profile save logic and resume workflows remain queued after the mock UI.
 - Built the complete Profile page UI from `context/designs/profile.png`, including responsive form sections, resume controls, completion state, tag inputs, and repeatable work experience.
-- Profile controls currently use local mock state only; InsForge persistence is reserved for feature 06.
+- Profile controls now hydrate from the authenticated profile row and persist through the Feature 06 server action.
+- Resume selection uploads to the active user resume path, and completion state remains derived from the eight required groups.
+- The `profile_completed` PostHog event fires only on an incomplete-to-complete transition.

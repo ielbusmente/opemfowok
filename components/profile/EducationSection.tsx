@@ -4,13 +4,22 @@ import {
   TextInput,
 } from "@/components/profile/ProfileField";
 
-export function EducationSection() {
+type EducationSectionProps = {
+  values: {
+    degree: string;
+    fieldOfStudy: string;
+    institution: string;
+    graduationYear: string;
+  };
+};
+
+export function EducationSection({ values }: EducationSectionProps) {
   return (
     <section className="space-y-4 border-t border-border-light pt-7">
       <h3 className="text-xs font-semibold text-text-primary">Education</h3>
       <div className="grid gap-4 md:grid-cols-2">
         <ProfileField label="Highest Degree">
-          <SelectInput>
+          <SelectInput name="degree" defaultValue={values.degree}>
             <option value="" disabled>
               Select highest degree
             </option>
@@ -21,13 +30,13 @@ export function EducationSection() {
           </SelectInput>
         </ProfileField>
         <ProfileField label="Field of Study">
-          <TextInput placeholder="Field of study" />
+          <TextInput name="field_of_study" defaultValue={values.fieldOfStudy} placeholder="Field of study" />
         </ProfileField>
         <ProfileField label="Institution Name">
-          <TextInput placeholder="E.g. State University" />
+          <TextInput name="institution" defaultValue={values.institution} placeholder="E.g. State University" />
         </ProfileField>
         <ProfileField label="Graduation Year">
-          <TextInput placeholder="YYYY" />
+          <TextInput name="graduation_year" defaultValue={values.graduationYear} placeholder="YYYY" />
         </ProfileField>
       </div>
     </section>
