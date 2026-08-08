@@ -51,7 +51,6 @@ next-env.d.ts
 .github/copilot*
 
 # Project context and planning docs
-/context
 .kilocode
 .qoder
 .qwen

@@ -103,7 +103,7 @@ export function ProfileForm({ email, userId, profile }: ProfileFormProps) {
           <section className="border-b border-border-light pb-6">
             <h2 className="text-base font-semibold text-text-primary">Resume</h2>
             <p className="mt-1 text-xs text-text-secondary">Upload an existing resume to auto-fill the profile, or generate a new tailored one from your details below.</p>
-            <div className="mt-4"><ResumeUpload onFileSelected={setResumeName} initialFileName={resumeName} /></div>
+            <div className="mt-4"><ResumeUpload onFileSelected={setResumeName} initialFileName={resumeName} currentResumeUrl={profile?.resume_pdf_url} userId={userId} /></div>
             {resumeName ? <p className="mt-3 text-xs text-success-dark">Selected: {resumeName}</p> : null}
           </section>
           <div className="pt-7"><SectionHeading title="Profile Information" description="This context is used to accurately represent you in agent interactions." /></div>
