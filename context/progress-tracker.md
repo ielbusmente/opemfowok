@@ -6,9 +6,9 @@ Update this file after every completed feature. Any AI agent reading this should
 
 ## Current Status
 
-**Phase:** Phase 1 — Foundation
-**Last completed:** 02 Auth (server-side InsForge OAuth flow + protected routes)
-**Next:** 03 PostHog Initialization
+**Phase:** Phase 2 — Profile Page
+**Last completed:** 04 Database Schema (InsForge tables, storage bucket, and RLS policies)
+**Next:** 05 Profile Page — Full UI
 
 ---
 
@@ -18,8 +18,8 @@ Update this file after every completed feature. Any AI agent reading this should
 
 - [x] 01 Homepage
 - [x] 02 Auth
-- [ ] 03 PostHog Initialization
-- [ ] 04 Database Schema
+- [x] 03 PostHog Initialization
+- [x] 04 Database Schema
 
 ### Phase 2 — Profile Page
 
@@ -59,3 +59,5 @@ _Add decisions here as they are made during implementation._
 - Implemented the first auth iteration using InsForge SSR auth helpers with server-side OAuth initiation and callback exchange.
 - Protected dashboard, find-jobs, and profile routes through middleware and redirect unauthenticated users to the login page.
 - The app now supports Google and GitHub sign-in entry points and a working callback route for the OAuth flow.
+- InsForge database schema setup is complete, including the application tables, resumes storage bucket, and row-level security policies.
+- Phase 2 starts with the Profile Page UI; profile save logic and resume workflows remain queued after the mock UI.
