@@ -37,7 +37,7 @@ Last updated: 2026-08-08
 | Shadow          | `shadow-sm`                                                   |
 
 **Pattern notes:**
-The Profile page uses a centered `max-w-[960px]` content column and stacks full-width white cards over the background token. Form sections use two columns from the `md` breakpoint, compact uppercase field labels, and a consistent 16px vertical rhythm. Repeating fields use muted surface panels, while missing-profile states use the error token only for badges, iconography, and the completion ring.
+The Profile page uses a centered `max-w-[960px]` content column and stacks full-width white cards over the background token. Form sections use two columns from the `md` breakpoint, compact uppercase field labels, and a consistent 16px vertical rhythm. Repeating fields use muted surface panels, while missing-profile states use the error token only for badges, iconography, and the completion ring. Keep the form decomposed by domain: `ProfileForm` owns state and orchestration, while each `*Section` owns its field layout and delegates shared controls to `ProfileField`, `TagList`, and `TextArea`/`TextInput`/`SelectInput`.
 
 - Homepage marketing layout — app/page.tsx — uses bg-background, bg-surface, bg-surface-secondary, border-border, text-text-primary, text-text-secondary, text-text-darkest, bg-accent, rounded-[24px], rounded-2xl, rounded-md, shadow-sm
 - Auth card layout — app/(auth)/login/page.tsx — uses bg-background, bg-surface, bg-surface-secondary, border-border, text-text-primary, text-text-secondary, text-accent, text-accent-foreground, rounded-[32px], rounded-[24px], rounded-xl, rounded-lg, shadow-sm

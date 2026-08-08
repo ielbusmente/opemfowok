@@ -1,34 +1,40 @@
-# Memory — Auth and UI foundation
+# Memory - Phase 2 Profile Foundation
 
-Last updated: 2026-08-02
+Last updated: 2026-08-08 (Asia/Manila)
 
 ## What was built
 
-- Implemented the first InsForge authentication flow for Google and GitHub OAuth using server-side auth actions and callback handling.
-- Added a login page at app/(auth)/login/page.tsx and a dashboard page at app/dashboard/page.tsx.
-- Added protected-route handling with proxy.ts so dashboard, find-jobs, and profile areas redirect unauthenticated users to login.
-- Added a visible Sign out button on the dashboard.
-- Created redirect helper logic and regression tests for auth redirect behavior in lib/auth-redirect.ts and lib/auth-redirect.test.mjs.
-- Updated the UI registry with the new auth and dashboard visual patterns in context/ui-registry.md.
+- Completed the database-schema phase; the project is ready to begin Phase 2.
+- Built the Profile page from the approved design, including the navigation, attention banner, completion ring, resume upload surface, personal information, professional information, work experience, education, job preferences, tag controls, and shared form controls.
+- Split the original profile form into domain-owned components under `components/profile/`, with `ProfileForm.tsx` retaining form state and orchestration.
+- Wired the disabled email field to the signed-in InsForge user's email instead of a form default value.
+- Linked the profile completion percentage and missing-field badges to the live form state; the percentage now starts from actual completion rather than a static 70% value.
+- Formatted every `.tsx` file with Prettier.
+- Captured the Profile form composition pattern in `context/ui-registry.md`.
 
 ## Decisions made
 
-- Chose a server-side OAuth flow for InsForge to keep auth cookies and callback exchange on the server, which fits the Next.js app architecture.
-- Used the Next.js proxy convention instead of the deprecated middleware convention for protected-route handling.
-- Kept the initial auth UI aligned with the existing Tailwind design tokens and the project’s homepage styling patterns.
-- Keep server-side PostHog for later
+- Profile field values intentionally start empty, except for the authenticated email, which is read-only.
+- Profile completeness is calculated from eight required profile groups: full name, phone, location, professional information, skills, work experience, education, and job preferences.
+- Domain sections own their visual field layouts; `ProfileForm` owns shared state, completion calculation, tag additions/removals, and submission feedback.
 
 ## Problems solved
 
-- Fixed the auth redirect flow so protected routes can send users back to the page they originally attempted to visit.
-- Resolved the Next.js 16 deprecation warning by migrating the route guard from middleware.ts to proxy.ts.
+- Removed misleading static progress from the Profile attention banner and completion ring.
+- Avoided duplicated form markup by extracting personal, professional, work experience, education, and job-preference sections into focused components.
 
 ## Current state
 
-- Auth sign-in and sign-out are wired through the app.
-- Protected routes redirect unauthenticated users to login.
-- The app builds successfully with npm run build.
+- The Profile UI is implemented and follows the design-token visual system.
+- The completion banner and ring update as required fields are completed.
+- The profile's authenticated email is displayed as a disabled field.
+- The latest UI consistency note is recorded in `context/ui-registry.md`.
+- `npm run build` and linting passed before the final Prettier-only formatting pass.
 
 ## Next session starts with
 
-- Move to the database schema and profile workflow.
+- Begin Phase 2 by connecting the Profile form's save flow and resume upload behavior to the completed database schema through the existing InsForge integration patterns.
+
+## Open questions
+
+- Confirm the desired database record shape and persistence behavior for repeatable work experience, skills, industries, and uploaded resume metadata before wiring the Profile save action.
