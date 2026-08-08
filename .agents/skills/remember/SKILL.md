@@ -82,25 +82,8 @@ Before writing `memory.md`, run a final pass over the content to ensure no sensi
 
 Write the memory to `memory.md` in the project root. This file always contains only the most recent session state.
 
-If `memory.md` already exists, show the developer a brief summary of what is currently saved and ask for confirmation before overwriting:
-
-Step 1 — Read `memory.md`, provide the one-line summary, and stop to wait for developer input:
-
-```
-memory.md already exists from a previous session.
+If `memory.md` already exists, read it and provide the one-line summary of the current session's additions into it after the safety check. Do not ask for confirmation before saving. Preserve existing non-sensitive content unless it is explicitly superseded by the current session; update only the sections or bullets that changed and append genuinely new facts. Never erase unrelated prior context just because it was not mentioned in the current session.
 Current memory covers: [one-line summary of existing content].
-
-Overwrite with this session's memory? (yes / no)
-```
-
-Step 2 — After the developer responds:
-
-- If they say **yes**, write the new `memory.md`.
-- If they say **no**, do not write anything and reply:
-
-```
-No changes made. memory.md is unchanged.
-```
 
 ### Format
 
