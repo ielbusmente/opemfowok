@@ -3,6 +3,7 @@
 import { useActionState, useCallback, useEffect, useRef, useState } from "react";
 import posthog from "posthog-js";
 import { saveProfile, type SaveProfileResult } from "@/actions/profile";
+import { Navbar } from "@/components/layout/Navbar";
 import { EducationSection } from "@/components/profile/EducationSection";
 import { JobPreferencesSection } from "@/components/profile/JobPreferencesSection";
 import { PersonalInfoSection } from "@/components/profile/PersonalInfoSection";
@@ -26,24 +27,6 @@ function SectionHeading({ title, description }: { title: string; description?: s
       <h2 className="text-base font-semibold text-text-primary">{title}</h2>
       {description ? <p className="mt-1 text-xs text-text-secondary">{description}</p> : null}
     </div>
-  );
-}
-
-function ProfileNavigation() {
-  return (
-    <header className="h-16 border-b border-border bg-surface">
-      <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-5 sm:px-8">
-        <a href="/dashboard" className="flex items-center gap-2.5 text-base font-bold text-text-darkest">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent text-accent-foreground">▦</span>
-          JobPilot
-        </a>
-        <nav className="flex h-full items-center gap-4 sm:gap-7" aria-label="Main navigation">
-          <a href="/dashboard" className="hidden text-xs font-medium text-text-dark transition hover:text-accent sm:block">Dashboard</a>
-          <a href="/find-jobs" className="text-xs font-medium text-text-dark transition hover:text-accent">Find Jobs</a>
-          <a href="/profile" className="relative flex h-full items-center text-xs font-medium text-accent">Profile<span className="absolute inset-x-0 bottom-0 h-0.5 bg-accent" /></a>
-        </nav>
-      </div>
-    </header>
   );
 }
 
@@ -96,8 +79,11 @@ export function ProfileForm({ email, userId, profile }: ProfileFormProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <ProfileNavigation />
-      <main className="mx-auto flex max-w-[960px] flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8">
+      <Navbar activePage="profile" />
+      <main
+        id="main-content"
+        className="mx-auto flex max-w-[960px] flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8"
+      >
         <ProfileAttentionBanner completion={completion} missingFields={missingFields} />
         <form ref={formRef} action={formAction} onInput={() => formRef.current && updateCompletion(formRef.current)} className="rounded-xl border border-border bg-surface p-5 shadow-sm sm:p-6">
           <section className="border-b border-border-light pb-6">

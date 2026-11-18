@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.redirect(new URL("/login?error=oauth", request.url));
     }
 
-    const response = NextResponse.redirect(new URL("/dashboard", request.url));
+    const response = NextResponse.redirect(new URL("/profile", request.url));
     const auth = createAuthActions({
         requestCookies: request.cookies,
         responseCookies: response.cookies,

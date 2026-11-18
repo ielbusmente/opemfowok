@@ -7,8 +7,8 @@ Update this file after every completed feature. Any AI agent reading this should
 ## Current Status
 
 **Phase:** Phase 2 — Profile Page
-**Last completed:** 05 Profile Page — Full UI
-**Next:** 06 Profile Save Logic
+**Last completed:** 06 Profile Save Logic
+**Next:** 07 AI Profile Extraction from Resume
 
 ---
 
@@ -65,3 +65,6 @@ _Add decisions here as they are made during implementation._
 - Profile controls now hydrate from the authenticated profile row and persist through the Feature 06 server action.
 - Resume selection uploads to the active user resume path, and completion state remains derived from the eight required groups.
 - The `profile_completed` PostHog event fires only on an incomplete-to-complete transition.
+- Login page now includes a link back to the public homepage.
+- Dashboard, profile, and Find Jobs now share the authenticated navigation. Find Jobs has a protected empty state while the full Feature 09 page remains pending.
+- OAuth sign in now defaults to the profile page.

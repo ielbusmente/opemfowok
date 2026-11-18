@@ -18,6 +18,21 @@ After building any component — update this file with the component name, file 
 
 ## Components
 
+### Authenticated Workspace Navigation
+
+Files: components/layout/Navbar.tsx, app/dashboard/page.tsx, app/find-jobs/page.tsx, components/profile/ProfileForm.tsx
+Last updated: 2026-11-18
+
+| Property | Class |
+| --- | --- |
+| Header | `h-16 border-b border-border bg-surface` |
+| Brand and navigation container | `mx-auto flex h-full max-w-[1440px] items-center justify-between px-4 sm:px-8` |
+| Active navigation link | `relative flex h-full items-center text-xs font-medium text-accent` |
+| Active page indicator | `absolute inset-x-0 bottom-0 h-0.5 bg-accent` |
+| Inactive navigation link | `text-text-dark hover:text-accent` |
+
+Pattern notes: The authenticated pages share one Opemfowok header with Dashboard, Find Jobs, and Profile links. The active page is marked with accent text, an underline, and `aria-current="page"`. A keyboard visible skip link targets the page main content.
+
 ### Profile Persistence Feedback
 
 Files: actions/profile.ts, app/profile/page.tsx, components/profile/ProfileForm.tsx
@@ -55,5 +70,5 @@ Last updated: 2026-08-08
 The Profile page uses a centered `max-w-[960px]` content column and stacks full-width white cards over the background token. Form sections use two columns from the `md` breakpoint, compact uppercase field labels, and a consistent 16px vertical rhythm. Repeating fields use muted surface panels, while missing-profile states use the error token only for badges, iconography, and the completion ring. Keep the form decomposed by domain: `ProfileForm` owns state and orchestration, while each `*Section` owns its field layout and delegates shared controls to `ProfileField`, `TagList`, and `TextArea`/`TextInput`/`SelectInput`.
 
 - Homepage marketing layout — app/page.tsx — uses bg-background, bg-surface, bg-surface-secondary, border-border, text-text-primary, text-text-secondary, text-text-darkest, bg-accent, rounded-[24px], rounded-2xl, rounded-md, shadow-sm
-- Auth card layout — app/(auth)/login/page.tsx — uses bg-background, bg-surface, bg-surface-secondary, border-border, text-text-primary, text-text-secondary, text-accent, text-accent-foreground, rounded-[32px], rounded-[24px], rounded-xl, rounded-lg, shadow-sm
+- Auth card layout — app/(auth)/login/page.tsx — uses bg-background, bg-surface, bg-surface-secondary, border-border, text-text-primary, text-text-secondary, text-accent, text-accent-foreground, rounded-[32px], rounded-[24px], rounded-xl, rounded-lg, shadow-sm; homepage link uses `mt-5 block text-center text-sm font-medium text-text-secondary transition hover:text-accent`
 - Dashboard shell — app/dashboard/page.tsx — uses bg-background, bg-surface, border-border, text-text-primary, text-text-secondary, text-accent, rounded-[32px], rounded-md, shadow-sm

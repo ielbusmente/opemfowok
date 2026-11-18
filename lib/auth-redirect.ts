@@ -8,19 +8,19 @@ export const isProtectedPath = (pathname: string) => {
 
 export const getSafeRedirectPath = (value: string | null | undefined) => {
     if (!value) {
-        return "/dashboard";
+        return "/profile";
     }
 
     if (!value.startsWith("/")) {
-        return "/dashboard";
+        return "/profile";
     }
 
     if (value.startsWith("//")) {
-        return "/dashboard";
+        return "/profile";
     }
 
     if (value === "/login") {
-        return "/dashboard";
+        return "/profile";
     }
 
     return value;

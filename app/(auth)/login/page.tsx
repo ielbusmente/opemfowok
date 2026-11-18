@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { signInWithGitHub, signInWithGoogle } from "@/actions/auth";
 import { getSafeRedirectPath } from "@/lib/auth-redirect";
@@ -59,6 +60,13 @@ export default async function LoginPage({
               Continue with GitHub
             </OAuthSignInButton>
           </form>
+
+          <Link
+            href="/"
+            className="mt-5 block text-center text-sm font-medium text-text-secondary transition hover:text-accent"
+          >
+            Back to homepage
+          </Link>
         </div>
       </div>
     </div>
