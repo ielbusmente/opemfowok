@@ -36,11 +36,11 @@ The AI agent on this project operates as a senior engineer. This means:
 - React 19 — use React 19 APIs throughout
 - All components are Server Components by default
 - Only add `"use client"` when the component requires:
-  - useState or useReducer
-  - useEffect
-  - Browser APIs
-  - Event listeners
-  - Third party client-only libraries (PostHog browser side)
+    - useState or useReducer
+    - useEffect
+    - Browser APIs
+    - Event listeners
+    - Third party client-only libraries (PostHog browser side)
 - Never add `"use client"` to layout files unless absolutely required
 - Data fetching happens in Server Components — never fetch in Client Components directly
 - Route handlers live in `app/api/` — never put business logic directly in route handlers
@@ -79,16 +79,16 @@ import { StatsCard } from "@/components/dashboard/StatsCard";
 
 // 3. Type definitions
 type Props = {
-  jobId: string;
-  matchScore: number;
+    jobId: string;
+    matchScore: number;
 };
 
 // 4. Component
 export function ComponentName({ jobId, matchScore }: Props) {
-  // state
-  // derived values
-  // handlers
-  // return JSX
+    // state
+    // derived values
+    // handlers
+    // return JSX
 }
 ```
 
@@ -107,18 +107,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { createInsforgeServer } from "@/lib/insforge-server";
 
 export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    // validate body
-    // call agent function
-    return NextResponse.json({ success: true, data: result });
-  } catch (error) {
-    console.error("[agent/find]", error);
-    return NextResponse.json(
-      { success: false, error: "Internal server error" },
-      { status: 500 },
-    );
-  }
+    try {
+        const body = await req.json();
+        // validate body
+        // call agent function
+        return NextResponse.json({ success: true, data: result });
+    } catch (error) {
+        console.error("[agent/find]", error);
+        return NextResponse.json(
+            { success: false, error: "Internal server error" },
+            { status: 500 },
+        );
+    }
 }
 ```
 
@@ -141,16 +141,16 @@ import { revalidatePath } from "next/cache";
 import { createInsforgeServer } from "@/lib/insforge-server";
 
 export async function saveProfile(formData: ProfileFormData) {
-  try {
-    const insforge = await createInsforgeServer();
-    // validate
-    // write to DB
-    revalidatePath("/profile");
-    return { success: true };
-  } catch (error) {
-    console.error("[actions/profile]", error);
-    return { success: false, error: "Failed to save profile" };
-  }
+    try {
+        const insforge = await createInsforgeServer();
+        // validate
+        // write to DB
+        revalidatePath("/profile");
+        return { success: true };
+    } catch (error) {
+        console.error("[actions/profile]", error);
+        return { success: false, error: "Failed to save profile" };
+    }
 }
 ```
 
@@ -167,18 +167,18 @@ export async function saveProfile(formData: ProfileFormData) {
 // agent/adzuna.ts
 
 export async function discoverJobs(
-  jobTitle: string,
-  location: string,
-  profile: Profile,
-  runId: string,
+    jobTitle: string,
+    location: string,
+    profile: Profile,
+    runId: string,
 ): Promise<{ success: boolean; jobs?: Job[]; error?: string }> {
-  try {
-    // implementation
-    return { success: true, jobs };
-  } catch (error) {
-    await logAgentError(runId, null, error);
-    return { success: false, error: String(error) };
-  }
+    try {
+        // implementation
+        return { success: true, jobs };
+    } catch (error) {
+        await logAgentError(runId, null, error);
+        return { success: false, error: String(error) };
+    }
 }
 ```
 
@@ -247,7 +247,7 @@ All environment variables defined in `.env.local` for development. Never hardcod
 | `NEXT_PUBLIC_INSFORGE_ANON_KEY` | lib/insforge-client.ts |
 | `BROWSERBASE_API_KEY`           | lib/browserbase.ts     |
 | `BROWSERBASE_PROJECT_ID`        | lib/browserbase.ts     |
-| `OPENAI_API_KEY`                | agent/ functions       |
+| `NVIDIA_API_KEY`                | agent/ functions       |
 | `ADZUNA_APP_ID`                 | lib/adzuna.ts          |
 | `ADZUNA_APP_KEY`                | lib/adzuna.ts          |
 | `NEXT_PUBLIC_POSTHOG_KEY`       | lib/posthog-client.ts  |
@@ -308,7 +308,7 @@ Approved dependencies for this project:
 - `@insforge/ssr` — InsForge client
 - `@browserbasehq/sdk` — Browserbase sessions
 - `@browserbasehq/stagehand` — AI browser control
-- `openai` — GPT-4o API
+- `openai` — OpenAI-compatible SDK client for OpenRouter; use `nvidia/nemotron-3-ultra-550b-a55b:free` as the model
 - `posthog-js` — PostHog browser client
 - `posthog-node` — PostHog server client
 - `@react-pdf/renderer` — Resume PDF generation

@@ -64,7 +64,7 @@ Backend-as-a-service (BaaS) platform providing:
 - **Database**: PostgreSQL with PostgREST API
 - **Authentication**: Email/password + OAuth (Google, GitHub)
 - **Storage**: File upload/download
-- **AI**: OpenRouter key provisioning and model catalog for direct OpenAI-compatible integrations
+- **AI**: OpenRouter key provisioning and the NVIDIA Nemotron model catalog
 - **Functions**: Serverless function deployment
 - **Realtime**: WebSocket pub/sub (database + client events)
 
@@ -130,7 +130,7 @@ Available documentation types:
     - `"auth-components-nextjs"` - Pre-built auth UI for Nextjs (SSR App)
 - `"storage-sdk"` - File storage operations
 - `"functions-sdk"` - Serverless functions invocation
-- `"ai-integration-sdk"` - AI integration with the provisioned OpenRouter key and OpenAI SDK
+- `"ai-integration-sdk"` - AI integration with the provisioned OpenRouter key and OpenAI-compatible SDK
 - `"real-time"` - Real-time pub/sub (database + client events) via WebSockets
 - `"deployment"` - Deploy frontend applications via MCP tool
 
@@ -146,7 +146,7 @@ Available feature types:
 - storage - File storage operations
 - functions - Serverless functions invocation
 - auth - User authentication
-- ai - AI integration with the provisioned OpenRouter key and OpenAI SDK
+- ai - AI integration with the provisioned OpenRouter key and OpenAI-compatible SDK
 - realtime - Real-time pub/sub (database + client events) via WebSockets
 
 Available languages:
@@ -163,7 +163,7 @@ Available languages:
 - Authentication (register, login, logout, profiles)
 - Database CRUD (select, insert, update, delete)
 - Storage operations (upload, download files)
-- AI integration via the provisioned OpenRouter key with the OpenAI SDK or OpenRouter HTTP API
+- AI integration via the provisioned OpenRouter key with the OpenAI-compatible SDK or OpenRouter HTTP API
 - Serverless function invocation
 
 ### Use MCP Tools for Infrastructure:
@@ -182,5 +182,5 @@ Available languages:
 - Database inserts require array format: `[{...}]`
 - Serverless functions have single endpoint (no subpaths)
 - Storage: Upload files to buckets, store URLs in database
-- AI integrations should call OpenRouter directly with `baseURL: "https://openrouter.ai/api/v1"` and a server-side `OPENROUTER_API_KEY`
+- AI integrations should call OpenRouter directly with `baseURL: "https://openrouter.ai/api/v1"` and a server-side `NVIDIA_API_KEY`; use `nvidia/nemotron-3-ultra-550b-a55b:free` as the selected model
 - **EXTRA IMPORTANT**: Use Tailwind CSS 3.4 (do not upgrade to v4). Lock these dependencies in `package.json`

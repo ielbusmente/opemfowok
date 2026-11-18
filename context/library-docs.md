@@ -39,8 +39,8 @@ Two separate instances — never mix them:
 import { createBrowserClient } from "@insforge/ssr";
 
 export const insforge = createBrowserClient(
-  process.env.NEXT_PUBLIC_INSFORGE_URL!,
-  process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_INSFORGE_URL!,
+    process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
 );
 ```
 
@@ -50,21 +50,21 @@ import { createServerClient } from "@insforge/ssr";
 import { cookies } from "next/headers";
 
 export const createInsforgeServer = async () => {
-  const cookieStore = await cookies();
-  return createServerClient(
-    process.env.NEXT_PUBLIC_INSFORGE_URL!,
-    process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => cookieStore.getAll(),
-        setAll: (cookiesToSet) => {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options),
-          );
+    const cookieStore = await cookies();
+    return createServerClient(
+        process.env.NEXT_PUBLIC_INSFORGE_URL!,
+        process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
+        {
+            cookies: {
+                getAll: () => cookieStore.getAll(),
+                setAll: (cookiesToSet) => {
+                    cookiesToSet.forEach(({ name, value, options }) =>
+                        cookieStore.set(name, value, options),
+                    );
+                },
+            },
         },
-      },
-    },
-  );
+    );
 };
 ```
 
@@ -83,8 +83,8 @@ export const createInsforgeServer = async () => {
 // Get current user in server context
 const insforge = await createInsforgeServer();
 const {
-  data: { user },
-  error,
+    data: { user },
+    error,
 } = await insforge.auth.getUser();
 if (!user) redirect("/login");
 ```
@@ -96,24 +96,24 @@ if (!user) redirect("/login");
 ```typescript
 // Read
 const { data, error } = await insforge
-  .from("jobs")
-  .select("*")
-  .eq("user_id", user.id)
-  .order("found_at", { ascending: false });
+    .from("jobs")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("found_at", { ascending: false });
 
 // Insert
 const { data, error } = await insforge
-  .from("jobs")
-  .insert({ user_id: user.id, title, company, match_score })
-  .select()
-  .single();
+    .from("jobs")
+    .insert({ user_id: user.id, title, company, match_score })
+    .select()
+    .single();
 
 // Update
 const { error } = await insforge
-  .from("jobs")
-  .update({ company_research: dossier })
-  .eq("id", jobId)
-  .eq("user_id", user.id); // always scope to user
+    .from("jobs")
+    .update({ company_research: dossier })
+    .eq("id", jobId)
+    .eq("user_id", user.id); // always scope to user
 ```
 
 **Rules:**
@@ -129,16 +129,14 @@ const { error } = await insforge
 ```typescript
 // Upload file
 const { data, error } = await insforge.storage
-  .from("resumes")
-  .upload(`${userId}/resume.pdf`, fileBuffer, {
-    contentType: "application/pdf",
-    upsert: true, // overwrites existing file
-  });
+    .from("resumes")
+    .upload(`${userId}/resume.pdf`, fileBuffer, {
+        contentType: "application/pdf",
+        upsert: true, // overwrites existing file
+    });
 
 // Get public URL
-const { data } = insforge.storage
-  .from("resumes")
-  .getPublicUrl(`${userId}/resume.pdf`);
+const { data } = insforge.storage.from("resumes").getPublicUrl(`${userId}/resume.pdf`);
 
 const url = data.publicUrl;
 ```
@@ -164,34 +162,34 @@ const url = data.publicUrl;
 ```typescript
 // lib/adzuna.ts
 export async function searchJobs(
-  jobTitle: string,
-  location: string,
-  country: string = "us",
+    jobTitle: string,
+    location: string,
+    country: string = "us",
 ): Promise<AdzunaJob[]> {
-  const params = new URLSearchParams({
-    app_id: process.env.ADZUNA_APP_ID!,
-    app_key: process.env.ADZUNA_APP_KEY!,
-    what: jobTitle,
-    category: "it-jobs", // always filter to IT jobs
-    results_per_page: "10",
-    "content-type": "application/json",
-  });
+    const params = new URLSearchParams({
+        app_id: process.env.ADZUNA_APP_ID!,
+        app_key: process.env.ADZUNA_APP_KEY!,
+        what: jobTitle,
+        category: "it-jobs", // always filter to IT jobs
+        results_per_page: "10",
+        "content-type": "application/json",
+    });
 
-  // Only add where if location is provided
-  if (location) {
-    params.set("where", location);
-  }
+    // Only add where if location is provided
+    if (location) {
+        params.set("where", location);
+    }
 
-  const response = await fetch(
-    `https://api.adzuna.com/v1/api/jobs/${country}/search/1?${params}`,
-  );
+    const response = await fetch(
+        `https://api.adzuna.com/v1/api/jobs/${country}/search/1?${params}`,
+    );
 
-  if (!response.ok) {
-    throw new Error(`Adzuna API error: ${response.status}`);
-  }
+    if (!response.ok) {
+        throw new Error(`Adzuna API error: ${response.status}`);
+    }
 
-  const data = await response.json();
-  return data.results || [];
+    const data = await response.json();
+    return data.results || [];
 }
 ```
 
@@ -201,18 +199,18 @@ Each Adzuna job result contains:
 
 ```typescript
 type AdzunaJob = {
-  id: string;
-  title: string;
-  company: { display_name: string };
-  location: { display_name: string };
-  description: string; // snippet only — not full description
-  redirect_url: string; // Adzuna tracking URL → redirects to actual job
-  salary_min?: number;
-  salary_max?: number;
-  salary_is_predicted: "0" | "1"; // "1" means salary is estimated
-  contract_type?: string;
-  created: string; // ISO date string
-  category: { tag: string; label: string };
+    id: string;
+    title: string;
+    company: { display_name: string };
+    location: { display_name: string };
+    description: string; // snippet only — not full description
+    redirect_url: string; // Adzuna tracking URL → redirects to actual job
+    salary_min?: number;
+    salary_max?: number;
+    salary_is_predicted: "0" | "1"; // "1" means salary is estimated
+    contract_type?: string;
+    created: string; // ISO date string
+    category: { tag: string; label: string };
 };
 ```
 
@@ -221,24 +219,24 @@ type AdzunaJob = {
 ```typescript
 // Map Adzuna result to jobs table
 const jobRecord = {
-  user_id: userId,
-  run_id: runId,
-  source: "search", // always 'search' for Adzuna jobs
-  source_url: job.redirect_url,
-  external_apply_url: job.redirect_url,
-  title: job.title,
-  company: job.company.display_name,
-  location: job.location.display_name,
-  salary: job.salary_min
-    ? `$${Math.round(job.salary_min / 1000)}k - $${Math.round(job.salary_max! / 1000)}k`
-    : null,
-  job_type: job.contract_type || "fulltime",
-  about_role: job.description, // Adzuna returns snippet — used as description
-  match_score: scoredJob.matchScore,
-  match_reason: scoredJob.matchReason,
-  matched_skills: scoredJob.matchedSkills,
-  missing_skills: scoredJob.missingSkills,
-  found_at: new Date().toISOString(),
+    user_id: userId,
+    run_id: runId,
+    source: "search", // always 'search' for Adzuna jobs
+    source_url: job.redirect_url,
+    external_apply_url: job.redirect_url,
+    title: job.title,
+    company: job.company.display_name,
+    location: job.location.display_name,
+    salary: job.salary_min
+        ? `$${Math.round(job.salary_min / 1000)}k - $${Math.round(job.salary_max! / 1000)}k`
+        : null,
+    job_type: job.contract_type || "fulltime",
+    about_role: job.description, // Adzuna returns snippet — used as description
+    match_score: scoredJob.matchScore,
+    match_reason: scoredJob.matchReason,
+    matched_skills: scoredJob.matchedSkills,
+    missing_skills: scoredJob.missingSkills,
+    found_at: new Date().toISOString(),
 };
 ```
 
@@ -248,7 +246,7 @@ const jobRecord = {
 - Never pass `where` if location is empty — omit the parameter entirely
 - `source` is always `'search'` for Adzuna jobs — never any other value
 - `salary_is_predicted: "1"` means Adzuna estimated the salary — this is normal
-- Adzuna description is a snippet — GPT-4o scores from it, not a full description
+- Adzuna description is a snippet — nvidia/nemotron-3-ultra-550b-a55b:free scores from it, not a full description
 - Default country to `'us'` — support `gb`, `au`, `ca` as alternatives
 
 ---
@@ -266,8 +264,8 @@ const bb = new Browserbase({ apiKey: process.env.BROWSERBASE_API_KEY! });
 
 // Single session for company research — sequential page visits
 const session = await bb.sessions.create({
-  projectId: process.env.BROWSERBASE_PROJECT_ID!,
-  timeout: 120, // 2 minute session — visits 3-4 pages max
+    projectId: process.env.BROWSERBASE_PROJECT_ID!,
+    timeout: 120, // 2 minute session — visits 3-4 pages max
 });
 ```
 
@@ -294,12 +292,16 @@ Browserbase sessions run on Browserbase's cloud infrastructure, not inside your 
 import { Stagehand } from "@browserbasehq/stagehand";
 
 const stagehand = new Stagehand({
-  env: "BROWSERBASE",
-  apiKey: process.env.BROWSERBASE_API_KEY!,
-  projectId: process.env.BROWSERBASE_PROJECT_ID!,
-  browserbaseSessionID: session.id,
-  model: { modelName: "openai/gpt-4o", apiKey: process.env.OPENAI_API_KEY! },
-  disablePino: true,
+    env: "BROWSERBASE",
+    apiKey: process.env.BROWSERBASE_API_KEY!,
+    projectId: process.env.BROWSERBASE_PROJECT_ID!,
+    browserbaseSessionID: session.id,
+    modelName: "nvidia/nemotron-3-ultra-550b-a55b:free",
+    modelClientOptions: {
+        apiKey: process.env.NVIDIA_API_KEY!,
+        baseURL: "https://openrouter.ai/api/v1",
+    },
+    disablePino: true,
 });
 
 await stagehand.init();
@@ -312,21 +314,21 @@ const page = stagehand.context.activePage()!;
 import { z } from "zod";
 
 const result = await stagehand.extract({
-  instruction:
-    "Extract the company overview, main product description, and any technology mentions from this page.",
-  schema: z.object({
-    companyOverview: z.string().optional(),
-    mainProduct: z.string().optional(),
-    techMentions: z.array(z.string()).optional(),
-    navLinks: z
-      .array(
-        z.object({
-          label: z.string(),
-          url: z.string(),
-        }),
-      )
-      .optional(),
-  }),
+    instruction:
+        "Extract the company overview, main product description, and any technology mentions from this page.",
+    schema: z.object({
+        companyOverview: z.string().optional(),
+        mainProduct: z.string().optional(),
+        techMentions: z.array(z.string()).optional(),
+        navLinks: z
+            .array(
+                z.object({
+                    label: z.string(),
+                    url: z.string(),
+                }),
+            )
+            .optional(),
+    }),
 });
 ```
 
@@ -335,11 +337,11 @@ const result = await stagehand.extract({
 ```typescript
 // Always wrap in try/catch
 try {
-  await stagehand.act({
-    action: "Click the About link in the navigation",
-  });
+    await stagehand.act({
+        action: "Click the About link in the navigation",
+    });
 } catch (error) {
-  await logAgentError(jobId, null, error);
+    await logAgentError(jobId, null, error);
 }
 ```
 
@@ -351,69 +353,74 @@ Replace the existing Stagehand "Company Research Pattern" section in library-doc
 
 ### Company Research Pattern
 
-Three-step process: homepage extraction → sub-page extraction → GPT-4o synthesis.
+Three-step process: homepage extraction → sub-page extraction → NVIDIA Nemotron synthesis through OpenRouter.
 Job description and user profile come from DB — never re-fetch what you already have.
 Browser's only job is the company website.
 
 ```typescript
+import OpenAI from "openai";
+
 // Step 1 — Homepage extraction
 const homepageData = await stagehand.extract({
-  instruction:
-    "This is a company's homepage. Capture what the company actually does, who it's for, and any concrete signals (funding, customers, scale, mission, recent launches). Then find the internal links most worth visiting to research them as an employer.",
-  schema: z.object({
-    oneLiner: z.string().describe("What the company does in one sentence"),
-    productSummary: z
-      .string()
-      .describe("What they build/sell and who it's for"),
-    signals: z
-      .array(z.string())
-      .describe("Funding, notable customers, scale, mission, recent news"),
-    pageLinks: z
-      .array(
-        z.object({
-          url: z.string(),
-          kind: z.enum([
-            "about",
-            "careers",
-            "blog",
-            "engineering",
-            "product",
-            "team",
-            "other",
-          ]),
-        }),
-      )
-      .describe("Internal links worth visiting"),
-  }),
+    instruction:
+        "This is a company's homepage. Capture what the company actually does, who it's for, and any concrete signals (funding, customers, scale, mission, recent launches). Then find the internal links most worth visiting to research them as an employer.",
+    schema: z.object({
+        oneLiner: z.string().describe("What the company does in one sentence"),
+        productSummary: z.string().describe("What they build/sell and who it's for"),
+        signals: z
+            .array(z.string())
+            .describe("Funding, notable customers, scale, mission, recent news"),
+        pageLinks: z
+            .array(
+                z.object({
+                    url: z.string(),
+                    kind: z.enum([
+                        "about",
+                        "careers",
+                        "blog",
+                        "engineering",
+                        "product",
+                        "team",
+                        "other",
+                    ]),
+                }),
+            )
+            .describe("Internal links worth visiting"),
+    }),
 });
 
 // If oneLiner and productSummary are empty — wrong site or parked domain
 // Skip to synthesis with job description and profile only
 if (!homepageData.oneLiner && !homepageData.productSummary) {
-  await stagehand.close();
-  // proceed to synthesis with empty companyResearch
+    await stagehand.close();
+    // proceed to synthesis with empty companyResearch
 }
 
 // Step 2 — Sub-page extraction (max 3, prefer about/blog/engineering/product over careers)
 const subPageData = await stagehand.extract({
-  instruction:
-    "Extract substance that helps a candidate understand this company before applying: what they do, their values and how they work, the specific technologies and tools they use, notable projects or customers, and how the team operates. Ignore nav, footers, cookie banners, and generic marketing copy.",
-  schema: z.object({
-    keyPoints: z.array(z.string()),
-    technologies: z
-      .array(z.string())
-      .describe("Specific languages, frameworks, tools, platforms"),
-    valuesOrCulture: z
-      .array(z.string())
-      .describe("Stated values, working style, team norms"),
-    notable: z
-      .array(z.string())
-      .describe("Customers, funding, scale, projects, awards"),
-  }),
+    instruction:
+        "Extract substance that helps a candidate understand this company before applying: what they do, their values and how they work, the specific technologies and tools they use, notable projects or customers, and how the team operates. Ignore nav, footers, cookie banners, and generic marketing copy.",
+    schema: z.object({
+        keyPoints: z.array(z.string()),
+        technologies: z
+            .array(z.string())
+            .describe("Specific languages, frameworks, tools, platforms"),
+        valuesOrCulture: z
+            .array(z.string())
+            .describe("Stated values, working style, team norms"),
+        notable: z
+            .array(z.string())
+            .describe("Customers, funding, scale, projects, awards"),
+    }),
 });
 
-// Step 3 — GPT-4o synthesis (after browser closes)
+// Step 3 — NVIDIA Nemotron synthesis through OpenRouter (after browser closes)
 // Feed three data sources: company research + job from DB + profile from DB
+const openrouter = new OpenAI({
+    baseURL: "https://openrouter.ai/api/v1",
+    apiKey: process.env.NVIDIA_API_KEY!,
+});
+
 const systemPrompt = `You are a sharp career strategist preparing a candidate to apply for a specific role. You are given (a) research collected from the company's own website, (b) the job posting, and (c) the candidate's profile. Produce a concise, concrete briefing that gives this specific candidate an edge for this specific role.
 
 Rules:
@@ -452,14 +459,14 @@ Experience: ${profile.years_experience} years, level ${profile.experience_level}
 Skills: ${profile.skills.join(", ")}
 Work history: ${JSON.stringify(profile.work_experience)}`;
 
-const response = await openai.chat.completions.create({
-  model: "gpt-4o",
-  response_format: { type: "json_object" },
-  temperature: 0.4,
-  messages: [
-    { role: "system", content: systemPrompt },
-    { role: "user", content: userPrompt },
-  ],
+const response = await openrouter.chat.completions.create({
+    model: "nvidia/nemotron-3-ultra-550b-a55b:free",
+    response_format: { type: "json_object" },
+    temperature: 0.4,
+    messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+    ],
 });
 ```
 
@@ -482,7 +489,7 @@ const response = await openai.chat.completions.create({
 - Always use `extract()` with a Zod schema — never parse raw HTML or use regex
 - Always wrap every `act()` and `extract()` in try/catch
 - Always call `await stagehand.close()` when done — ends the Browserbase session
-- Model is always `gpt-4o` — never use other models
+- Model is always `nvidia/nemotron-3-ultra-550b-a55b:free` — never use other models
 - Temperature is `0.4` for synthesis — grounded but flexible enough to make real connections
 - Max 3 sub-pages — never exceed this on free plan
 - Always close session in finally block — never leave sessions open even if research fails
@@ -490,31 +497,34 @@ const response = await openai.chat.completions.create({
 - If browser research returns empty — still run synthesis with job + profile only
 - yourEdge, gapsToAddress, and smartQuestions are the most valuable fields — never skip them
 
-## OpenAI GPT-4o
+## OpenRouter Chat Completions with NVIDIA Nemotron
 
-**Check first:** Check AGENTS.md for an installed OpenAI skill. The skill will have the latest API patterns and model capabilities.
+OpenRouter provides the API key and routes requests to the selected NVIDIA model. The OpenAI SDK is used only as an OpenAI-compatible client.
 
 ### Structured JSON Response
 
 ```typescript
 import OpenAI from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+const openrouter = new OpenAI({
+    baseURL: "https://openrouter.ai/api/v1",
+    apiKey: process.env.NVIDIA_API_KEY!,
+});
 
-const response = await openai.chat.completions.create({
-  model: "gpt-4o",
-  response_format: { type: "json_object" },
-  temperature: 0.3,
-  messages: [
-    {
-      role: "system",
-      content: "You are a job matching assistant. Return only valid JSON.",
-    },
-    {
-      role: "user",
-      content: `Your prompt here`,
-    },
-  ],
+const response = await openrouter.chat.completions.create({
+    model: "nvidia/nemotron-3-ultra-550b-a55b:free",
+    response_format: { type: "json_object" },
+    temperature: 0.3,
+    messages: [
+        {
+            role: "system",
+            content: "You are a job matching assistant. Return only valid JSON.",
+        },
+        {
+            role: "user",
+            content: `Your prompt here`,
+        },
+    ],
 });
 
 const result = JSON.parse(response.choices[0].message.content!);
@@ -534,7 +544,9 @@ const result = JSON.parse(response.choices[0].message.content!);
 
 **Rules:**
 
-- Model string is always `'gpt-4o'` — never use other model names
+- Model string is always `'nvidia/nemotron-3-ultra-550b-a55b:free'` — never use other model names
+- OpenRouter key is always read from `NVIDIA_API_KEY` on the server
+- OpenAI SDK is the OpenAI-compatible client only; the model provider is NVIDIA through OpenRouter
 - Always use `response_format: { type: 'json_object' }` for structured data
 - Always parse `response.choices[0].message.content` as string — even with json_object it returns a string
 - Always validate parsed JSON before using — wrap in try/catch
@@ -554,19 +566,19 @@ const result = JSON.parse(response.choices[0].message.content!);
 import posthog from "posthog-js";
 
 export function initPostHog() {
-  if (typeof window !== "undefined") {
-    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST!,
-      capture_pageview: false, // manual pageview tracking
-    });
-  }
+    if (typeof window !== "undefined") {
+        posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+            api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST!,
+            capture_pageview: false, // manual pageview tracking
+        });
+    }
 }
 
 // Capture event client-side
 posthog.capture("job_found", {
-  userId,
-  source: "search",
-  matchScore: score,
+    userId,
+    source: "search",
+    matchScore: score,
 });
 ```
 
@@ -577,18 +589,18 @@ posthog.capture("job_found", {
 import { PostHog } from "posthog-node";
 
 export const createPostHogServer = () =>
-  new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-    host: process.env.NEXT_PUBLIC_POSTHOG_HOST!,
-    flushAt: 1, // send immediately
-    flushInterval: 0, // no batching — Next.js functions are short-lived
-  });
+    new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+        host: process.env.NEXT_PUBLIC_POSTHOG_HOST!,
+        flushAt: 1, // send immediately
+        flushInterval: 0, // no batching — Next.js functions are short-lived
+    });
 
 // Always use and shutdown in the same function
 const posthog = createPostHogServer();
 posthog.capture({
-  distinctId: userId,
-  event: "company_researched",
-  properties: { userId, jobId, company },
+    distinctId: userId,
+    event: "company_researched",
+    properties: { userId, jobId, company },
 });
 await posthog.shutdown(); // required — ensures event is sent
 ```
@@ -669,21 +681,21 @@ import pdf from "pdf-parse";
 
 // In API route handling resume upload
 export async function POST(req: NextRequest) {
-  const formData = await req.formData();
-  const file = formData.get("resume") as File;
-  const arrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
+    const formData = await req.formData();
+    const file = formData.get("resume") as File;
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
-  const pdfData = await pdf(buffer);
-  const extractedText = pdfData.text; // raw text content
+    const pdfData = await pdf(buffer);
+    const extractedText = pdfData.text; // raw text content
 
-  // Send to GPT-4o for structured extraction
+    // Send to NVIDIA Nemotron through OpenRouter for structured extraction
 }
 ```
 
 **Rules:**
 
 - Server-side only — never import in client components
-- `pdfData.text` is raw unformatted text — GPT-4o handles the structure extraction
+- `pdfData.text` is raw unformatted text — NVIDIA Nemotron through OpenRouter handles the structure extraction
 - Always handle parse errors — some PDFs are image-based and return empty text
 - If `pdfData.text` is empty or very short — return error to user: "Could not extract text from this PDF. Please try a different file."

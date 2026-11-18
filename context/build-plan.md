@@ -70,9 +70,9 @@ All InsForge tables and storage bucket created before any data is written.
 - Create `profiles` table with all columns from architecture.md
 - Create `agent_runs` table
 - Create `jobs` table with all columns including:
-  - tailored fields
-  - company_research jsonb column
-  - source values: 'search' | 'url'
+    - tailored fields
+    - company_research jsonb column
+    - source values: 'search' | 'url'
 - Create `agent_logs` table
 - Create `resumes` storage bucket with authenticated access only
 - Row level security policies on all four tables — always filter by user_id
@@ -90,11 +90,11 @@ Build the complete profile page UI with mock data. No save logic yet.
 - Profile needs attention banner at top — completion percentage ring, missing field tags highlighted (e.g. PHONE, LOCATION, EDUCATION)
 - Resume section — drag and drop upload area, "Click to upload or drag and drop" text, PDF only note, Select Resume button, Generate Resume from Profile button below
 - Profile Information form with clearly labeled sections:
-  - Personal Info — Full Name, Email (pre-filled, not editable), Phone Number, Location, LinkedIn URL, Portfolio/GitHub, Work Authorization dropdown
-  - Professional Info — Current Job Title, Experience Level dropdown, Years of Experience, Skills tag input with Add button, Industries tag input with Add button
-  - Work Experience — up to 3 roles, each with Company Name, Job Title, Start Date, End Date, Currently working here checkbox, Key Responsibilities textarea. Add role button.
-  - Education — Highest Degree dropdown, Field of Study, Institution Name, Graduation Year
-  - Job Preferences — Job Titles Seeking, Remote Preference dropdown, Salary Expectation, Preferred Locations, Cover Letter Tone dropdown
+    - Personal Info — Full Name, Email (pre-filled, not editable), Phone Number, Location, LinkedIn URL, Portfolio/GitHub, Work Authorization dropdown
+    - Professional Info — Current Job Title, Experience Level dropdown, Years of Experience, Skills tag input with Add button, Industries tag input with Add button
+    - Work Experience — up to 3 roles, each with Company Name, Job Title, Start Date, End Date, Currently working here checkbox, Key Responsibilities textarea. Add role button.
+    - Education — Highest Degree dropdown, Field of Study, Institution Name, Graduation Year
+    - Job Preferences — Job Titles Seeking, Remote Preference dropdown, Salary Expectation, Preferred Locations, Cover Letter Tone dropdown
 - Save Profile button at bottom
 
 ---
@@ -117,7 +117,7 @@ Wire profile form to InsForge DB.
 
 ### 07 AI Profile Extraction from Resume
 
-Extract from Resume button — GPT-4o reads uploaded PDF and auto-fills profile form fields.
+Extract from Resume button — NVIDIA Nemotron via OpenRouter reads the uploaded PDF and auto-fills profile form fields.
 
 **UI:**
 
@@ -130,7 +130,7 @@ Extract from Resume button — GPT-4o reads uploaded PDF and auto-fills profile 
 
 - pdf-parse extracts raw text from uploaded PDF buffer
 - If extracted text is empty or too short — return error: "Could not extract text from this PDF. Please try a different file."
-- GPT-4o reads extracted text and returns structured JSON matching all profile field names
+- NVIDIA Nemotron via OpenRouter reads extracted text and returns structured JSON matching all profile field names
 - Form fields populated with extracted data
 - User saves manually after reviewing
 
@@ -138,17 +138,17 @@ Extract from Resume button — GPT-4o reads uploaded PDF and auto-fills profile 
 
 ### 08 Resume PDF Generation from Profile
 
-Generate a clean professional PDF resume from current profile data using GPT-4o.
+Generate a clean professional PDF resume from current profile data using an LLM model i will provide an API key for.
 
 **Logic:**
 
 - POST /api/resume/generate
 - Reads current profile data from profiles table
-- GPT-4o generates professional resume content:
-  - Professional summary paragraph
-  - Polished work experience bullet points
-  - Clean professional language throughout
-- @react-pdf/renderer renders GPT-4o output into clean single-page PDF using renderToBuffer()
+- LLM Model generates professional resume content:
+    - Professional summary paragraph
+    - Polished work experience bullet points
+    - Clean professional language throughout
+- @react-pdf/renderer renders LLM Model output into clean single-page PDF using renderToBuffer()
 - Buffer uploaded to InsForge Storage at resumes/{user_id}/resume.pdf with upsert: true
 - resume_pdf_url updated in profiles table
 
@@ -163,14 +163,14 @@ Build the complete Find Jobs page UI with mock data. No logic yet.
 **UI:**
 
 - Search controls card at top:
-  - JOB TITLE label + input with search icon placeholder "Frontend Engineer"
-  - LOCATION label + input placeholder "Remote, New York..."
-  - Find Jobs button with search icon
-  - Success message area below controls — green banner: "Found 8 jobs and saved 4 strong matches."
+    - JOB TITLE label + input with search icon placeholder "Frontend Engineer"
+    - LOCATION label + input placeholder "Remote, New York..."
+    - Find Jobs button with search icon
+    - Success message area below controls — green banner: "Found 8 jobs and saved 4 strong matches."
 - Job list section below:
-  - Filter bar: text search input "Filter by company or role...", All Matches dropdown, Match Score sort dropdown
-  - Jobs table with columns: COMPANY, ROLE, MATCH SCORE (color coded progress bar + percentage), SALARY EST., SOURCE (Search/URL badge), DATE FOUND
-  - Pagination — "Showing 1 to 6 of 24 results", Previous, page numbers, Next
+    - Filter bar: text search input "Filter by company or role...", All Matches dropdown, Match Score sort dropdown
+    - Jobs table with columns: COMPANY, ROLE, MATCH SCORE (color coded progress bar + percentage), SALARY EST., SOURCE (Search/URL badge), DATE FOUND
+    - Pagination — "Showing 1 to 6 of 24 results", Previous, page numbers, Next
 
 ---
 
@@ -182,20 +182,20 @@ Agent calls Adzuna API to find jobs matching user's search criteria, scores them
 
 - POST /api/agent/find receives jobTitle and location from client
 - Call Adzuna API:
-  - GET https://api.adzuna.com/v1/api/jobs/{country}/search/1
-  - params: what={jobTitle}, where={location}, results_per_page=10, app_id, app_key
-  - Detect country from location input — default to 'us'
+    - GET https://api.adzuna.com/v1/api/jobs/{country}/search/1
+    - params: what={jobTitle}, where={location}, results_per_page=10, app_id, app_key
+    - Detect country from location input — default to 'us'
 - For each job returned:
-  - Extract title, company, location, salary, description snippet, redirect_url
-  - GPT-4o scores job against user profile:
-    - matchScore — integer 0-100
-    - matchReason — one paragraph explanation
-    - matchedSkills — skills user has that job requires
-    - missingSkills — skills job requires that user lacks
-  - Save complete record to jobs table:
-    - source: 'search'
-    - run_id from agent_runs record
-    - All structured fields saved
+    - Extract title, company, location, salary, description snippet, redirect_url
+    - NVIDIA Nemotron via OpenRouter scores the job against the user profile:
+        - matchScore — integer 0-100
+        - matchReason — one paragraph explanation
+        - matchedSkills — skills user has that job requires
+        - missingSkills — skills job requires that user lacks
+    - Save complete record to jobs table:
+        - source: 'search'
+        - run_id from agent_runs record
+        - All structured fields saved
 - Create agent_run record in DB
 - After all jobs saved — update agent_run with total count, return success message to frontend
 
@@ -231,7 +231,7 @@ Build the complete job details page UI. Job data from DB is already available fr
 - Back to Jobs link
 - Job header — company logo placeholder, job title, company name, match score badge with percentage, View Job Post button (links to redirect_url)
 - Info cards row — Salary Est., Location, Job Type, Date Found
-- AI Match Reasoning section — match reason paragraph from GPT-4o
+- AI Match Reasoning section — match reason paragraph from NVIDIA Nemotron
 - Required Skills vs Your Profile — matched skills as green badges, missing skills as red/orange badges
 - Job Description section — description content from Adzuna
 - Company Research card — empty state with Research Company button. After research: structured dossier with company overview, tech stack, culture, why this role, interview prep
@@ -249,44 +249,42 @@ Agent researches the company using their public website and builds a structured 
 - Load job data from DB — extract company_name, job description, matched_skills, missing_skills
 - Load user profile from DB — skills, experience, work history
 - Derive company homepage URL by following the Adzuna redirect with server-side fetch() — no browser needed for this step:
-  - fetch(redirect_url, { redirect: "follow" }) follows HTTP redirects natively before the browser opens
-  - Use response.url as the real employer job page URL
-  - Strip subdomain from response.url hostname (e.g. jobs.stripe.com → stripe.com)
-  - Construct homepage URL as https://{rootDomain}
-  - If response.url still contains "adzuna.com" or fetch throws — fall back to https://www.{company}.com (company name from DB)
-  - If Stagehand gets no meaningful content (oneLiner and productSummary empty) — skip browser research entirely, proceed to GPT-4o synthesis with job description and profile only
+    - fetch(redirect_url, { redirect: "follow" }) follows HTTP redirects natively before the browser opens
+    - Use response.url as the real employer job page URL
+    - Strip subdomain from response.url hostname (e.g. jobs.stripe.com → stripe.com)
+    - Construct homepage URL as https://{rootDomain}
+    - If response.url still contains "adzuna.com" or fetch throws — fall back to https://www.{company}.com (company name from DB)
+    - If Stagehand gets no meaningful content (oneLiner and productSummary empty) — skip browser research entirely, proceed to NVIDIA Nemotron synthesis with job description and profile only
 - Open single Browserbase session with Stagehand
   **Stagehand homepage extraction:**
 
 ```typescript
 const homepage = await stagehand.extract({
-  instruction:
-    "This is a company's homepage. Capture what the company actually does, who it's for, and any concrete signals (funding, customers, scale, mission, recent launches). Then find the internal links most worth visiting to research them as an employer.",
-  schema: z.object({
-    oneLiner: z.string().describe("What the company does in one sentence"),
-    productSummary: z
-      .string()
-      .describe("What they build/sell and who it's for"),
-    signals: z
-      .array(z.string())
-      .describe("Funding, notable customers, scale, mission, recent news"),
-    pageLinks: z
-      .array(
-        z.object({
-          url: z.string(),
-          kind: z.enum([
-            "about",
-            "careers",
-            "blog",
-            "engineering",
-            "product",
-            "team",
-            "other",
-          ]),
-        }),
-      )
-      .describe("Internal links worth visiting"),
-  }),
+    instruction:
+        "This is a company's homepage. Capture what the company actually does, who it's for, and any concrete signals (funding, customers, scale, mission, recent launches). Then find the internal links most worth visiting to research them as an employer.",
+    schema: z.object({
+        oneLiner: z.string().describe("What the company does in one sentence"),
+        productSummary: z.string().describe("What they build/sell and who it's for"),
+        signals: z
+            .array(z.string())
+            .describe("Funding, notable customers, scale, mission, recent news"),
+        pageLinks: z
+            .array(
+                z.object({
+                    url: z.string(),
+                    kind: z.enum([
+                        "about",
+                        "careers",
+                        "blog",
+                        "engineering",
+                        "product",
+                        "team",
+                        "other",
+                    ]),
+                }),
+            )
+            .describe("Internal links worth visiting"),
+    }),
 });
 ```
 
@@ -296,25 +294,25 @@ If oneLiner and productSummary are empty — bail to synthesis with job descript
 
 ```typescript
 const page = await stagehand.extract({
-  instruction:
-    "Extract substance that helps a candidate understand this company before applying: what they do, their values and how they work, the specific technologies and tools they use, notable projects or customers, and how the team operates. Ignore nav, footers, cookie banners, and generic marketing copy.",
-  schema: z.object({
-    keyPoints: z.array(z.string()),
-    technologies: z
-      .array(z.string())
-      .describe("Specific languages, frameworks, tools, platforms"),
-    valuesOrCulture: z
-      .array(z.string())
-      .describe("Stated values, working style, team norms"),
-    notable: z
-      .array(z.string())
-      .describe("Customers, funding, scale, projects, awards"),
-  }),
+    instruction:
+        "Extract substance that helps a candidate understand this company before applying: what they do, their values and how they work, the specific technologies and tools they use, notable projects or customers, and how the team operates. Ignore nav, footers, cookie banners, and generic marketing copy.",
+    schema: z.object({
+        keyPoints: z.array(z.string()),
+        technologies: z
+            .array(z.string())
+            .describe("Specific languages, frameworks, tools, platforms"),
+        valuesOrCulture: z
+            .array(z.string())
+            .describe("Stated values, working style, team norms"),
+        notable: z
+            .array(z.string())
+            .describe("Customers, funding, scale, projects, awards"),
+    }),
 });
 ```
 
 - Close Browserbase session after homepage + max 3 sub-pages
-  **GPT-4o synthesis (runs after browser closes):**
+  **NVIDIA Nemotron synthesis through OpenRouter (runs after browser closes):**
 
 System prompt:
 
@@ -353,20 +351,20 @@ Temperature: 0.4
 
 ```json
 {
-  "companyOverview": "string",
-  "techStack": ["string"],
-  "culture": ["string"],
-  "whyThisRole": "string",
-  "yourEdge": ["string"],
-  "gapsToAddress": ["string"],
-  "smartQuestions": ["string"],
-  "interviewPrep": ["string"],
-  "sources": ["string"]
+    "companyOverview": "string",
+    "techStack": ["string"],
+    "culture": ["string"],
+    "whyThisRole": "string",
+    "yourEdge": ["string"],
+    "gapsToAddress": ["string"],
+    "smartQuestions": ["string"],
+    "interviewPrep": ["string"],
+    "sources": ["string"]
 }
 ```
 
 - Save complete dossier to jobs.company_research jsonb column
-- Always return a dossier — never fail silently. If browser research failed, GPT-4o synthesizes from job description and profile alone.
+- Always return a dossier — never fail silently. If browser research failed, NVIDIA Nemotron via OpenRouter synthesizes from job description and profile alone.
   **PostHog event:** `company_researched` — { userId, jobId, company }
 
 ---
@@ -424,8 +422,8 @@ Wire recent activity list to real InsForge DB data for current user.
 - Query jobs table — most recent company research entries for current user
 - Merge and sort all by created_at descending — take last 5-10 entries
 - Format each into human readable string:
-  - agent_run completed → "Found X jobs for [jobTitle] — [time ago]"
-  - company_research populated → "Researched [company] — [time ago]"
+    - agent_run completed → "Found X jobs for [jobTitle] — [time ago]"
+    - company_research populated → "Researched [company] — [time ago]"
 - Color coded dot per entry type — info blue, success green
 
 ---

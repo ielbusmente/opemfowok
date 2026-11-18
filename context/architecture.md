@@ -2,18 +2,18 @@
 
 ## Stack
 
-| Layer                          | Tool                     | Purpose                                          |
-| ------------------------------ | ------------------------ | ------------------------------------------------ |
-| Framework                      | Next.js 16 (App Router)  | Full stack framework                             |
-| Auth + DB + Storage + Realtime | InsForge                 | Entire backend                                   |
-| Cloud browser                  | Browserbase              | Company research — browsing company public pages |
-| AI browser control             | Stagehand                | Company page interaction and content extraction  |
-| Job Discovery                  | Adzuna API               | Job search and discovery                         |
-| AI model                       | OpenAI GPT-4o            | Matching, research synthesis, extraction         |
-| Analytics                      | PostHog                  | Event tracking and dashboard charts              |
-| PDF generation                 | @react-pdf/renderer      | Resume PDF rendering                             |
-| Styling                        | Tailwind CSS + shadcn/ui | UI components and styling                        |
-| Language                       | TypeScript strict        | Throughout                                       |
+| Layer                          | Tool                                                                                        | Purpose                                          |
+| ------------------------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| Framework                      | Next.js 16 (App Router)                                                                     | Full stack framework                             |
+| Auth + DB + Storage + Realtime | InsForge                                                                                    | Entire backend                                   |
+| Cloud browser                  | Browserbase                                                                                 | Company research — browsing company public pages |
+| AI browser control             | Stagehand                                                                                   | Company page interaction and content extraction  |
+| Job Discovery                  | Adzuna API                                                                                  | Job search and discovery                         |
+| AI model                       | NVIDIA Nemotron 3 Ultra 550B A55B via OpenRouter (`nvidia/nemotron-3-ultra-550b-a55b:free`) | Matching, research synthesis, extraction         |
+| Analytics                      | PostHog                                                                                     | Event tracking and dashboard charts              |
+| PDF generation                 | @react-pdf/renderer                                                                         | Resume PDF rendering                             |
+| Styling                        | Tailwind CSS + shadcn/ui                                                                    | UI components and styling                        |
+| Language                       | TypeScript strict                                                                           | Throughout                                       |
 
 ---
 
@@ -56,10 +56,10 @@
 │       │   ├── generate/route.ts          → Generate base resume PDF from profile
 │       │   └── extract/route.ts           → Extract profile data from uploaded resume PDF
 ├── agent/
-│   ├── adzuna.ts                          → Adzuna API job discovery + GPT-4o scoring
-│   ├── research.ts                        → Company research — Browserbase + Stagehand + GPT-4o
-│   ├── matcher.ts                         → GPT-4o job matching logic
-│   ├── extractor.ts                       → GPT-4o job description extraction + structuring
+│   ├── adzuna.ts                          → Adzuna API job discovery + NVIDIA Nemotron scoring
+│   ├── research.ts                        → Company research — Browserbase + Stagehand + NVIDIA Nemotron
+│   ├── matcher.ts                         → NVIDIA Nemotron job matching logic
+│   ├── extractor.ts                       → NVIDIA Nemotron job description extraction + structuring
 │   └── types.ts                           → Agent-specific TypeScript types
 ├── actions/
 │   ├── profile.ts                         → Profile save + update
@@ -146,7 +146,7 @@ Calls agent/adzuna.ts
         ↓
 Adzuna API returns job listings
         ↓
-GPT-4o scores each job against user profile
+NVIDIA Nemotron via OpenRouter scores each job against the user profile
         ↓
 Agent writes results to InsForge DB
         ↓
@@ -166,7 +166,7 @@ Single Browserbase session opens with Stagehand
         ↓
 Navigates to company homepage + sub pages
         ↓
-GPT-4o synthesizes dossier from extracted content
+NVIDIA Nemotron via OpenRouter synthesizes the dossier from extracted content
         ↓
 Dossier saved to jobs.company_research
         ↓
@@ -180,7 +180,7 @@ User uploads resume or clicks Generate
         ↓
 API route in app/api/resume/
         ↓
-GPT-4o processes content
+NVIDIA Nemotron via OpenRouter processes the content
         ↓
 @react-pdf/renderer renders PDF buffer
         ↓
@@ -257,7 +257,7 @@ URL saved to profiles table
 | benefits           | text[]      | Optional                                       |
 | about_company      | text        | Brief company description                      |
 | match_score        | integer     | 0-100 scored against main profile              |
-| match_reason       | text        | GPT-4o explanation                             |
+| match_reason       | text        | NVIDIA Nemotron explanation                    |
 | matched_skills     | text[]      | Skills user has that match                     |
 | missing_skills     | text[]      | Skills user lacks                              |
 | company_research   | jsonb       | Company dossier from research agent            |
@@ -307,8 +307,8 @@ Two separate InsForge instances — never mix them:
 // Browser-side — used in client components for auth state
 import { createBrowserClient } from "@insforge/ssr";
 export const insforge = createBrowserClient(
-  process.env.NEXT_PUBLIC_INSFORGE_URL!,
-  process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_INSFORGE_URL!,
+    process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
 );
 
 // lib/insforge-server.ts
@@ -317,21 +317,21 @@ import { createServerClient } from "@insforge/ssr";
 import { cookies } from "next/headers";
 
 export const createInsforgeServer = async () => {
-  const cookieStore = await cookies();
-  return createServerClient(
-    process.env.NEXT_PUBLIC_INSFORGE_URL!,
-    process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => cookieStore.getAll(),
-        setAll: (cookiesToSet) => {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options),
-          );
+    const cookieStore = await cookies();
+    return createServerClient(
+        process.env.NEXT_PUBLIC_INSFORGE_URL!,
+        process.env.NEXT_PUBLIC_INSFORGE_ANON_KEY!,
+        {
+            cookies: {
+                getAll: () => cookieStore.getAll(),
+                setAll: (cookiesToSet) => {
+                    cookiesToSet.forEach(({ name, value, options }) =>
+                        cookieStore.set(name, value, options),
+                    );
+                },
+            },
         },
-      },
-    },
-  );
+    );
 };
 ```
 
@@ -342,8 +342,8 @@ export const createInsforgeServer = async () => {
 ```typescript
 // Company research session — single session, sequential page visits
 const session = await bb.sessions.create({
-  projectId: process.env.BROWSERBASE_PROJECT_ID!,
-  timeout: 120, // 2 minute session — visits 3-4 pages max
+    projectId: process.env.BROWSERBASE_PROJECT_ID!,
+    timeout: 120, // 2 minute session — visits 3-4 pages max
 });
 ```
 
@@ -355,14 +355,14 @@ const session = await bb.sessions.create({
 
 ```typescript
 const response = await fetch(
-  `https://api.adzuna.com/v1/api/jobs/us/search/1?` +
-    `app_id=${process.env.ADZUNA_APP_ID}&` +
-    `app_key=${process.env.ADZUNA_APP_KEY}&` +
-    `what=${encodeURIComponent(jobTitle)}&` +
-    `where=${encodeURIComponent(location)}&` +
-    `category=it-jobs&` +
-    `results_per_page=10&` +
-    `content-type=application/json`,
+    `https://api.adzuna.com/v1/api/jobs/us/search/1?` +
+        `app_id=${process.env.ADZUNA_APP_ID}&` +
+        `app_key=${process.env.ADZUNA_APP_KEY}&` +
+        `what=${encodeURIComponent(jobTitle)}&` +
+        `where=${encodeURIComponent(location)}&` +
+        `category=it-jobs&` +
+        `results_per_page=10&` +
+        `content-type=application/json`,
 );
 const data = await response.json();
 // data.results — array of job listings
@@ -377,12 +377,15 @@ const data = await response.json();
 ```typescript
 // Single session — visits company homepage and sub pages sequentially
 const stagehand = new Stagehand({
-  env: "BROWSERBASE",
-  apiKey: process.env.BROWSERBASE_API_KEY!,
-  projectId: process.env.BROWSERBASE_PROJECT_ID!,
-  browserbaseSessionID: session.id,
-  modelName: "gpt-4o",
-  modelClientOptions: { apiKey: process.env.OPENAI_API_KEY! },
+    env: "BROWSERBASE",
+    apiKey: process.env.BROWSERBASE_API_KEY!,
+    projectId: process.env.BROWSERBASE_PROJECT_ID!,
+    browserbaseSessionID: session.id,
+    modelName: "nvidia/nemotron-3-ultra-550b-a55b:free",
+    modelClientOptions: {
+        apiKey: process.env.NVIDIA_API_KEY!,
+        baseURL: "https://openrouter.ai/api/v1",
+    },
 });
 
 await stagehand.init();
@@ -390,21 +393,21 @@ const page = stagehand.page;
 
 // Clean company name and construct homepage URL
 const cleanName = companyName
-  .replace(/\s*(Inc\.?|LLC|Ltd\.?|Corp\.?|Co\.?).*$/i, "")
-  .trim()
-  .toLowerCase()
-  .replace(/\s+/g, "");
+    .replace(/\s*(Inc\.?|LLC|Ltd\.?|Corp\.?|Co\.?).*$/i, "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "");
 
 const homepageUrl = `https://www.${cleanName}.com`;
 
 // Navigate and extract — graceful fallback if page not found
 try {
-  await page.goto(homepageUrl);
-  await page.waitForLoadState("networkidle");
-  const content = await stagehand.extract({ instruction: "..." });
+    await page.goto(homepageUrl);
+    await page.waitForLoadState("networkidle");
+    const content = await stagehand.extract({ instruction: "..." });
 } catch (error) {
-  // Log and continue — GPT-4o will synthesize from what was found
-  await logAgentError(jobId, error);
+    // Log and continue — NVIDIA Nemotron will synthesize from what was found
+    await logAgentError(jobId, error);
 }
 
 // Always close session when done
@@ -423,7 +426,7 @@ Rules the AI agent must never violate:
 - All InsForge server-side writes use `createInsforgeServer()` — never the browser client.
 - No hardcoded hex values or raw Tailwind color classes in components — use CSS variables from ui-tokens.md.
 - Every Stagehand action is wrapped in try/catch. Failures are logged to agent_logs, never thrown to crash the run.
-- Company research always returns a dossier — even if browser research fails, GPT-4o synthesizes from company name and job description alone. Never return empty.
+- Company research always returns a dossier — even if browser research fails, NVIDIA Nemotron via OpenRouter synthesizes from the company name and job description alone. Never return empty.
 - Browserbase sessions are always closed with stagehand.close() when done — never leave sessions open.
 - Always scope InsForge queries to the current user_id — never query without a user filter.
 - Adzuna API always includes category=it-jobs — never search without this filter.
